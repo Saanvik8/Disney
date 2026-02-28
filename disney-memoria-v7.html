@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disney Memoria ✦ Something Never Changes</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#02010a}
+body{font-family:'Jost',sans-serif;color:#f0eee8;cursor:none}
+.cursor{position:fixed;width:10px;height:10px;background:#fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
+.cursor-ring{position:fixed;width:34px;height:34px;border:1px solid rgba(255,255,255,.25);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .12s ease-out}
+#starCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.screen{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .9s ease}
+.screen.active{opacity:1;pointer-events:all}
+.burst{position:fixed;border-radius:50%;pointer-events:none;z-index:100;transform:translate(-50%,-50%) scale(0);transition:transform .7s cubic-bezier(.4,0,.2,1),opacity .7s;opacity:0}
+.burst.go{transform:translate(-50%,-50%) scale(40);opacity:1}
+
+/* SCREEN 0 - OPENING */
+#screen0{background:linear-gradient(180deg,#000008,#02010a);z-index:20;position:fixed;inset:0}
+#screen0::before{content:'';position:absolute;inset:0;z-index:0;background-image:url('disney-castle-background-ajdgsefo2rldkxce.jpg');background-size:cover;background-position:center top;opacity:0.38;animation:bgFadeIn 2.5s 0.2s both}
+@keyframes bgFadeIn{from{opacity:0}to{opacity:0.28}}
+#screen0>*{position:relative;z-index:1}
+.castle-wrap{position:relative;text-align:center;margin-bottom:40px}
+.castle{font-size:80px;display:block;animation:castleRise 2s .3s both cubic-bezier(.2,0,.2,1)}
+@keyframes castleRise{from{opacity:0;transform:translateY(40px) scale(.8)}to{opacity:1;transform:translateY(0) scale(1)}}
+.rays{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;pointer-events:none;animation:raysAppear 1s 1s both}
+@keyframes raysAppear{from{opacity:0;transform:translate(-50%,-50%) scale(.5)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.rays span{position:absolute;top:50%;left:50%;width:1px;height:88px;transform-origin:bottom center;background:linear-gradient(to top,rgba(255,215,100,.4),transparent)}
+.il{font-family:'Cormorant Garamond',serif;text-align:center;opacity:0}
+.il.l1{font-size:clamp(.9rem,1.8vw,1.2rem);font-weight:300;letter-spacing:6px;text-transform:uppercase;color:rgba(255,215,100,.55);margin-bottom:14px;animation:fadeUp .8s 1.8s both}
+.il.l2{font-size:clamp(2rem,4.5vw,3.6rem);font-weight:300;line-height:1.2;color:#f5f0e8;margin-bottom:8px;animation:fadeUp .8s 2.3s both}
+.il.l2 em{font-style:italic;color:#ffd88a}
+.il.l3{font-size:clamp(.85rem,1.6vw,1.1rem);font-weight:300;letter-spacing:3px;color:rgba(255,255,255,.3);margin-bottom:40px;animation:fadeUp .8s 2.8s both}
+.intro-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(.9rem,1.6vw,1.08rem);color:rgba(255,255,255,.38);text-align:center;max-width:520px;line-height:1.9;animation:fadeUp .8s 3.4s both;opacity:0;margin-bottom:44px}
+.intro-sub strong{color:rgba(255,215,100,.65);font-style:normal}
+.intro-enter{display:inline-flex;align-items:center;gap:12px;font-size:11.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);border-radius:100px;padding:13px 30px;cursor:none;transition:all .3s;animation:fadeUp .8s 4.2s both;opacity:0}
+.intro-enter:hover{color:#fff;border-color:rgba(255,215,100,.5);background:rgba(255,215,100,.05)}
+.sparkle{animation:sparkSpin 2s linear infinite;font-size:13px}
+@keyframes sparkSpin{0%{transform:rotate(0)}50%{transform:rotate(180deg) scale(1.2)}100%{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+#screen1{overflow-y:auto;overflow-x:hidden;justify-content:flex-start;padding-top:52px;padding-bottom:60px}
+#screen1::-webkit-scrollbar{width:3px}
+#screen1::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+/* SCREEN 1 - MOOD */
+.s1-logo{font-family:'Cormorant Garamond',serif;font-size:12px;font-weight:300;letter-spacing:8px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:12px;animation:fadeUp .8s .1s both}
+.s1-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4.5vw,3.6rem);font-weight:300;text-align:center;line-height:1.2;color:#f5f0e8;margin-bottom:8px;animation:fadeUp .8s .3s both}
+.s1-title em{font-style:italic;color:#ffd88a}
+.s1-sub{font-size:12px;font-weight:200;letter-spacing:2px;color:rgba(255,255,255,.28);text-transform:uppercase;margin-bottom:50px;animation:fadeUp .8s .5s both}
+.orbs-wrap{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;max-width:680px;padding:0 16px;animation:fadeUp .8s .7s both}
+.orb{position:relative;width:104px;height:104px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:none;transition:transform .4s cubic-bezier(.34,1.56,.64,1);animation:orbFloat linear infinite}
+.orb::before{content:'';position:absolute;inset:0;border-radius:50%;background:inherit;filter:blur(18px);opacity:.28;transform:scale(1.3);z-index:-1;transition:opacity .3s}
+.orb:hover{transform:scale(1.14) translateY(-8px)}
+.orb:hover::before{opacity:.58}
+.orb-e{font-size:26px;margin-bottom:3px}
+.orb-l{font-size:9px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.82)}
+.o-lonely{background:radial-gradient(circle at 35% 35%,#4a6fa5,#1a2a4a);animation-duration:6s}
+.o-hopeful{background:radial-gradient(circle at 35% 35%,#f0a500,#7a4a00);animation-duration:7s;animation-delay:.5s}
+.o-brave{background:radial-gradient(circle at 35% 35%,#c0392b,#4a0f0a);animation-duration:5.5s;animation-delay:1s}
+.o-nostalgic{background:radial-gradient(circle at 35% 35%,#8e44ad,#2d1250);animation-duration:8s;animation-delay:.3s}
+.o-lost{background:radial-gradient(circle at 35% 35%,#2ecc71,#0a3a1a);animation-duration:6.5s;animation-delay:.8s}
+.o-heartbroken{background:radial-gradient(circle at 35% 35%,#e84393,#4a0a25);animation-duration:7.5s;animation-delay:.2s}
+.o-excited{background:radial-gradient(circle at 35% 35%,#f39c12,#3a2000);animation-duration:5s;animation-delay:1.2s}
+.o-adventurous{background:radial-gradient(circle at 35% 35%,#1abc9c,#063a30);animation-duration:9s;animation-delay:.6s}
+@keyframes orbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.nav-row{display:flex;gap:12px;margin-top:28px;animation:fadeUp .8s .9s both}
+.nav-chip{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:8px 18px;cursor:none;transition:all .2s}
+.nav-chip:hover{color:rgba(255,215,100,.75);border-color:rgba(255,215,100,.3)}
+
+.s1-digital{
+  width:100%;max-width:720px;
+  margin-top:36px;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;
+  padding:24px 32px;
+  animation:fadeUp .7s .9s both;
+  position:relative;z-index:10;
+}
+.s1-digital-label{
+  font-size:10px;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(255,215,100,.5);margin-bottom:14px;font-family:'Jost',sans-serif;text-align:center;
+}
+.s1-digital-row{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+.s1-digital-card{
+  flex:1;min-width:160px;max-width:200px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  padding:14px 16px;
+  display:flex;align-items:flex-start;gap:12px;
+  transition:background .2s,border-color .2s;
+}
+.s1-digital-card:hover{background:rgba(255,255,255,.08);border-color:rgba(255,215,100,.2)}
+.s1-digital-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.s1-digital-name{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:#f5f0e8;margin-bottom:3px}
+.s1-digital-desc{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.3px;line-height:1.5}
+.s2-bg{position:absolute;inset:0;z-index:0;transition:background 1s}
+.particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.particle{position:absolute;border-radius:50%;animation:pDrift linear infinite;opacity:0}
+@keyframes pDrift{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.55}90%{opacity:.25}100%{transform:translateY(-20vh) scale(1);opacity:0}}
+#screen2{overflow-y:auto;overflow-x:hidden;align-items:center;justify-content:flex-start;padding-top:72px}
+#screen2::-webkit-scrollbar{width:3px}
+#screen2::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+.s2-back{position:fixed;top:20px;left:32px;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);cursor:none;transition:color .2s;z-index:20}
+.s2-back:hover{color:rgba(255,255,255,.7)}
+.s2-content{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;width:100%;max-width:1060px;padding:0 32px 80px}
+.s2-label{font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:6px;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:6px;animation:fadeUp .7s .1s both}
+.s2-hl{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4.2vw,3.6rem);font-weight:300;text-align:center;line-height:1.15;color:#f5f0e8;margin-bottom:8px;animation:fadeUp .7s .2s both}
+.s2-hl em{font-style:italic}
+.s2-tl{font-size:12px;font-weight:200;letter-spacing:.8px;color:rgba(255,255,255,.32);text-align:center;margin-bottom:40px;max-width:450px;line-height:1.8;animation:fadeUp .7s .3s both}
+.portals{display:flex;gap:18px;width:100%;justify-content:center;animation:fadeUp .7s .4s both;flex-wrap:wrap}
+.portal{position:relative;width:270px;height:365px;border-radius:18px;overflow:hidden;cursor:none;flex-shrink:0;transition:transform .4s cubic-bezier(.34,1.2,.64,1);border:1px solid rgba(255,255,255,.07)}
+.portal:hover{transform:translateY(-14px) scale(1.02)}
+.portal-bg{position:absolute;inset:0;transition:transform .6s}
+.portal:hover .portal-bg{transform:scale(1.06)}
+.portal-g{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.22) 55%,transparent 100%)}
+.portal-p{position:absolute;top:18px;left:50%;transform:translateX(-50%);font-size:42px;z-index:2;transition:transform .4s}
+.portal:hover .portal-p{transform:translateX(-50%) scale(1.12) translateY(-4px)}
+.portal-o{position:absolute;top:72px;left:50%;transform:translateX(-50%);font-size:19px;opacity:.6;z-index:2;animation:opulse 3s ease-in-out infinite}
+@keyframes opulse{0%,100%{opacity:.5}50%{opacity:.85}}
+.portal-body{position:absolute;bottom:0;left:0;right:0;padding:18px}
+.portal-r{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:5px}
+.portal-t{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:400;color:#f5f0e8;margin-bottom:3px;line-height:1.1}
+.portal-n{font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px}
+.portal-cta{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.75);border-bottom:1px solid rgba(255,255,255,.22);display:inline-block;padding-bottom:2px;transition:all .2s}
+.portal:hover .portal-cta{color:#fff;border-color:#fff}
+.s2-btns{display:flex;gap:12px;margin-top:22px;animation:fadeUp .7s .6s both}
+.s2-btn{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.09);border-radius:100px;padding:8px 18px;cursor:none;transition:all .2s}
+.s2-btn:hover{color:rgba(255,215,100,.75);border-color:rgba(255,215,100,.3)}
+
+/* SCREEN 3 - STORY */
+#screen3{flex-direction:row;align-items:stretch;justify-content:flex-start;overflow:hidden}
+.s3l{width:350px;flex-shrink:0;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:32px}
+.s3l-bg{position:absolute;inset:0;transition:background 1s}
+.s3l-ov{position:absolute;inset:0;background:linear-gradient(to right,transparent 52%,#02010a 100%),linear-gradient(to top,rgba(0,0,0,.6) 0%,transparent 52%)}
+.s3-pw{position:relative;z-index:5;text-align:center}
+.s3-pe{font-size:106px;display:block;filter:drop-shadow(0 0 36px rgba(255,255,255,.1));animation:pfloat 4s ease-in-out infinite;line-height:1}
+@keyframes pfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.s3-orb{position:absolute;top:8px;right:-8px;font-size:32px;animation:orbit 6s linear infinite;filter:drop-shadow(0 0 10px rgba(255,255,255,.22))}
+@keyframes orbit{0%{transform:rotate(0deg) translateX(46px) rotate(0deg)}100%{transform:rotate(360deg) translateX(46px) rotate(-360deg)}}
+.s3-pn{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:12px;position:relative;z-index:5}
+.s3-fn{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.2);margin-top:4px;position:relative;z-index:5}
+.s3-cbtn{margin-top:16px;position:relative;z-index:5;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,215,100,.55);border:1px solid rgba(255,215,100,.18);border-radius:100px;padding:7px 16px;cursor:none;transition:all .2s}
+.s3-cbtn:hover{color:rgba(255,215,100,1);border-color:rgba(255,215,100,.5)}
+.s3r{flex:1;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth}
+.s3r::-webkit-scrollbar{width:2px}
+.s3r::-webkit-scrollbar-thumb{background:rgba(255,255,255,.07)}
+.s3-top{position:sticky;top:0;z-index:20;padding:20px 40px 12px;background:linear-gradient(to bottom,#02010a 75%,transparent);display:flex;align-items:center;gap:12px}
+.s3-bb{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28);cursor:none;transition:color .2s}
+.s3-bb:hover{color:rgba(255,255,255,.65)}
+.s3-tt{font-family:'Cormorant Garamond',serif;font-size:.88rem;color:rgba(255,255,255,.16);flex:1;text-align:right;font-style:italic}
+.s3-intro{padding:8px 40px 32px}
+.s3-bc{font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.26);margin-bottom:8px}
+.s3-rs{font-family:'Cormorant Garamond',serif;font-size:.98rem;font-style:italic;color:rgba(255,255,255,.48);line-height:1.8;margin-bottom:26px;padding-left:13px;border-left:1px solid rgba(255,255,255,.1)}
+.s3-mt{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.7rem);font-weight:300;color:#f5f0e8;line-height:1.1;margin-bottom:4px}
+.s3-yr{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:26px}
+.ch-lbl{font-size:9.5px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.18);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.ch-lbl::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.05)}
+.chapter{margin-bottom:5px;border-radius:11px;overflow:hidden;border:1px solid rgba(255,255,255,.05);transition:border-color .3s}
+.chapter.open{border-color:rgba(255,255,255,.1)}
+.ch-h{display:flex;align-items:center;gap:13px;padding:15px 18px;cursor:none;transition:background .2s;background:rgba(255,255,255,.02)}
+.ch-h:hover,.chapter.open .ch-h{background:rgba(255,255,255,.045)}
+.ch-n{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:rgba(255,255,255,.11);line-height:1;min-width:34px}
+.chapter.open .ch-n{color:rgba(255,255,255,.42)}
+.ch-m{flex:1}
+.ch-a{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:3px}
+.ch-ti{font-family:'Cormorant Garamond',serif;font-size:.98rem;color:rgba(255,255,255,.6)}
+.chapter.open .ch-ti{color:#f5f0e8}
+.ch-ob{font-size:19px;opacity:.42;transition:opacity .3s}
+.chapter.open .ch-ob{opacity:1}
+.ch-ar{font-size:10.5px;color:rgba(255,255,255,.16);transition:transform .3s,color .3s}
+.chapter.open .ch-ar{transform:rotate(90deg);color:rgba(255,255,255,.38)}
+.ch-bd{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.4,0,.2,1)}
+.chapter.open .ch-bd{max-height:320px}
+.ch-in{padding:5px 18px 22px 65px}
+.ch-pv{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:rgba(255,255,255,.48);line-height:1.85;margin-bottom:12px;border-left:1.5px solid rgba(255,255,255,.07);padding-left:13px}
+.ch-q{font-size:10px;letter-spacing:.8px;color:rgba(255,255,255,.26);display:flex;align-items:flex-start;gap:8px}
+.ch-q::before{content:'✦';color:rgba(255,255,255,.16);flex-shrink:0}
+.s3-acts{padding:24px 40px 40px;display:flex;flex-direction:column;gap:9px}
+.s3-bp{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);color:#f5f0e8;border-radius:10px;padding:12px 20px;font-family:'Jost',sans-serif;font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;cursor:none;transition:all .2s;text-align:center}
+.s3-bp:hover{background:rgba(255,255,255,.13)}
+.s3-br{display:flex;gap:9px}
+.s3-bs{flex:1;background:transparent;border:1px solid rgba(255,255,255,.09);color:rgba(255,255,255,.38);border-radius:10px;padding:10px;font-family:'Jost',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;cursor:none;transition:all .2s;text-align:center}
+.s3-bs:hover{border-color:rgba(255,255,255,.26);color:rgba(255,255,255,.75)}
+
+/* SCREEN 4 - CARD */
+#screen4{background:#02010a;perspective:1200px}
+.card-back-nav{position:absolute;top:20px;left:32px;font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28);cursor:none;z-index:20;transition:color .2s}
+.card-back-nav:hover{color:rgba(255,255,255,.65)}
+.card-scene{width:330px;height:510px;perspective:1000px;cursor:none;margin-top:10px}
+.card-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,0,.2,1)}
+.card-scene:hover .card-inner{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;overflow:hidden}
+.card-front{border:2px solid rgba(255,215,100,.28);background:linear-gradient(135deg,#0a0a1a,#12103a,#0a0818)}
+.cf-sh{position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(255,215,100,.035) 50%,transparent 60%);animation:cfsh 3s ease-in-out infinite}
+@keyframes cfsh{0%,100%{opacity:.5}50%{opacity:1}}
+.cf-hd{padding:16px 16px 8px;display:flex;align-items:center;justify-content:space-between}
+.cf-type{font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,215,100,.55);font-family:'Jost',sans-serif}
+.cf-gem{width:20px;height:20px;border-radius:50%;border:1px solid rgba(255,215,100,.35);display:flex;align-items:center;justify-content:center;font-size:10px}
+.cf-art{height:172px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.cf-art-bg{position:absolute;inset:0;opacity:.38}
+.cf-princess{font-size:86px;position:relative;z-index:2;filter:drop-shadow(0 0 28px rgba(255,215,100,.18));animation:cfloat 3s ease-in-out infinite}
+@keyframes cfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.cf-obj{position:absolute;bottom:10px;right:16px;font-size:26px;z-index:2;opacity:.65}
+.cf-div{height:1px;background:linear-gradient(to right,transparent,rgba(255,215,100,.22),transparent);margin:0 16px}
+.cf-nr{padding:10px 16px 5px;display:flex;align-items:baseline;justify-content:space-between}
+.cf-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:#f5f0e8}
+.cf-film{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.28)}
+.cf-stats{padding:3px 16px 8px;display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.cf-stat{background:rgba(255,255,255,.035);border-radius:6px;padding:6px 9px;border:1px solid rgba(255,255,255,.055)}
+.cf-stat-l{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:3px}
+.cf-stat-v{font-size:10.5px;color:rgba(255,255,255,.65);line-height:1.3}
+.cf-stat.full{grid-column:1/-1}
+.cf-stat.gold .cf-stat-v{color:#ffd060}
+.cf-stat.green .cf-stat-v{color:#6edfb0}
+.cf-stat.red .cf-stat-v{color:#f07080}
+.cf-stat.purple .cf-stat-v{color:#c580ff}
+.cf-ft{padding:6px 16px 12px;display:flex;justify-content:space-between;align-items:center}
+.cf-rar{font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,215,100,.38)}
+.cf-hint{font-size:8.5px;letter-spacing:1px;color:rgba(255,255,255,.16);font-style:italic}
+/* Card back */
+.card-back-face{transform:rotateY(180deg);border:2px solid rgba(160,100,255,.28);background:linear-gradient(135deg,#0a0818,#1a0a30,#080a18);padding:20px}
+.cb-lbl{font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(160,100,255,.55);margin-bottom:12px;text-align:center}
+.cb-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:#f5f0e8;margin-bottom:7px;text-align:center}
+.cb-fem{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.87rem;color:rgba(255,255,255,.5);line-height:1.75;margin-bottom:16px;text-align:center;padding:0 6px}
+.cb-al-l{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:7px}
+.cb-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.ally-tag,.enemy-tag{font-size:9px;padding:3px 9px;border-radius:100px}
+.ally-tag{background:rgba(78,205,196,.09);border:1px solid rgba(78,205,196,.18);color:rgba(78,205,196,.75)}
+.enemy-tag{background:rgba(240,80,80,.07);border:1px solid rgba(240,80,80,.18);color:rgba(240,100,100,.65)}
+.cb-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;color:rgba(255,215,100,.45);text-align:center;border-top:1px solid rgba(255,255,255,.06);padding-top:12px;line-height:1.6}
+
+/* SCREEN 5 - MAP (old paper scroll) */
+#screen5{background:#1a0e06;overflow:hidden;justify-content:flex-start;padding-top:0}
+
+/* MAP VERTICAL UNROLL ANIMATION */
+.map-scroll-outer{position:relative;width:100%;height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center}
+
+/* Scroll pieces start hidden, animate in sequence */
+.scroll-roll-top{opacity:0;transform:translateY(-100%)}
+.scroll-body{opacity:0;max-height:0;overflow:hidden}
+.scroll-roll-bottom{opacity:0;transform:translateY(100%)}
+
+.map-scroll-outer.unrolling .scroll-roll-top{
+  animation:rollTopDrop .55s .1s cubic-bezier(.34,1.2,.64,1) forwards
+}
+.map-scroll-outer.unrolling .scroll-body{
+  animation:unrollOpen 1.1s .45s cubic-bezier(.16,1,.3,1) forwards;
+  overflow-y:auto
+}
+.map-scroll-outer.unrolling .scroll-roll-bottom{
+  animation:rollBottomRise .55s 1.3s cubic-bezier(.34,1.2,.64,1) forwards
+}
+@keyframes rollTopDrop{
+  from{opacity:0;transform:translateY(-60px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes unrollOpen{
+  0%{opacity:0;max-height:0;transform:scaleY(0);transform-origin:top center}
+  20%{opacity:1}
+  100%{opacity:1;max-height:calc(100vh - 160px);transform:scaleY(1);transform-origin:top center}
+}
+@keyframes rollBottomRise{
+  from{opacity:0;transform:translateY(60px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* SCREEN 2 upgrades — digital presence + bg */
+.s2-digital{
+  width:100%;max-width:860px;
+  margin-top:32px;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;
+  padding:24px 32px;
+  animation:fadeUp .7s .7s both;
+  position:relative;z-index:10;
+}
+.s2-digital-label{
+  font-size:10px;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(255,215,100,.5);margin-bottom:14px;font-family:'Jost',sans-serif;
+}
+.s2-digital-row{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+.s2-digital-card{
+  flex:1;min-width:180px;max-width:240px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  padding:14px 16px;
+  display:flex;align-items:flex-start;gap:12px;
+  transition:background .2s,border-color .2s;
+}
+.s2-digital-card:hover{background:rgba(255,255,255,.08);border-color:rgba(255,215,100,.2)}
+.s2-digital-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.s2-digital-info{}
+.s2-digital-name{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:#f5f0e8;margin-bottom:3px}
+.s2-digital-desc{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.3px;line-height:1.5}
+
+/* Castle BG section — below the portals */
+.s2-castle-bg{
+  width:100%;max-width:860px;
+  min-height:220px;
+  margin-top:24px;
+  border-radius:16px;
+  overflow:hidden;
+  position:relative;
+  animation:fadeUp .7s .8s both;
+  border:1px solid rgba(255,255,255,.08);
+}
+.s2-castle-bg-img{
+  position:absolute;inset:0;
+  background-image:url('disney-castle-background-ajdgsefo2rldkxce.jpg');
+  background-size:cover;background-position:center top;
+  transition:transform .6s ease;
+}
+.s2-castle-bg:hover .s2-castle-bg-img{transform:scale(1.04)}
+.s2-castle-bg-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,.1) 0%,rgba(0,0,0,.55) 100%);
+}
+.s2-castle-bg-text{
+  position:relative;z-index:2;
+  padding:32px 32px 28px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  height:100%;min-height:220px;
+}
+.s2-castle-eyebrow{
+  font-size:10px;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(255,215,100,.65);margin-bottom:8px;
+}
+.s2-castle-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.6rem,2.8vw,2.2rem);
+  font-weight:300;color:#fff;line-height:1.2;
+}
+.s2-castle-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:1rem;
+  color:rgba(255,255,255,.55);margin-top:6px;
+}
+
+/* GLOBAL FONT SIZE BOOST */
+body{font-size:16px}
+.s1-logo{font-size:14px !important;letter-spacing:10px !important}
+.s1-title{font-size:clamp(2.8rem,5.5vw,4.8rem) !important}
+.s1-sub{font-size:15px !important;letter-spacing:3px !important}
+.orb-l{font-size:12px !important;letter-spacing:2px !important}
+.orb-e{font-size:32px !important}
+.orb{width:120px !important;height:120px !important}
+.nav-chip{font-size:12px !important;padding:10px 22px !important}
+.s2-hl{font-size:clamp(2.6rem,5vw,4.4rem) !important}
+.s2-tl{font-size:15px !important;letter-spacing:1px !important}
+.s2-label{font-size:14px !important;letter-spacing:8px !important}
+.portal-t{font-size:1.7rem !important}
+.portal-n{font-size:12px !important;letter-spacing:2px !important}
+.portal-cta{font-size:12px !important;letter-spacing:2px !important}
+.portal-r{font-size:11px !important;letter-spacing:2px !important}
+.s2-digital-label{font-size:12px !important;letter-spacing:5px !important}
+.s2-digital-name{font-size:1.2rem !important}
+.s2-digital-desc{font-size:13px !important}
+.s2-castle-eyebrow{font-size:12px !important;letter-spacing:5px !important}
+.s2-castle-title{font-size:clamp(1.9rem,3.2vw,2.8rem) !important}
+.s2-castle-sub{font-size:1.15rem !important}
+.ch-ti{font-size:1.15rem !important}
+.ch-pv{font-size:1.08rem !important;line-height:1.9 !important}
+.ch-q{font-size:12px !important}
+.ch-a{font-size:10px !important;letter-spacing:3px !important}
+.ch-lbl{font-size:11px !important;letter-spacing:5px !important}
+.s3-pn{font-size:1.2rem !important;letter-spacing:5px !important}
+.s3-fn{font-size:.85rem !important}
+.s3-mt{font-size:clamp(2.2rem,3.8vw,3.4rem) !important}
+.s3-rs{font-size:1.15rem !important;line-height:1.85 !important}
+.s3-bc{font-size:11px !important;letter-spacing:4px !important}
+.s3-yr{font-size:12px !important;letter-spacing:4px !important}
+.s3-bb{font-size:12px !important}
+.s3-cbtn{font-size:11px !important}
+.s3-bp{font-size:13px !important}
+.s3-bs{font-size:12px !important}
+.cf-name{font-size:1.8rem !important}
+.cf-film{font-size:11px !important}
+.cf-type{font-size:10px !important}
+.cf-stat-l{font-size:9.5px !important}
+.cf-stat-v{font-size:12px !important}
+.cf-rar{font-size:10px !important}
+.cb-lbl{font-size:10px !important;letter-spacing:4px !important}
+.cb-title{font-size:1.35rem !important}
+.cb-fem{font-size:1.05rem !important;line-height:1.8 !important}
+.cb-al-l{font-size:9.5px !important}
+.ally-tag,.enemy-tag{font-size:11px !important}
+.cb-quote{font-size:1rem !important}
+.map-t{font-size:clamp(1.8rem,3vw,2.6rem) !important}
+.map-s{font-size:1rem !important;letter-spacing:4px !important}
+.map-nav{font-size:1rem !important}
+.mp-pop-t{font-size:1.1rem !important}
+.mp-pop-r{font-size:10px !important}
+.mp-pop-f{font-size:13px !important}
+.legend-item{font-size:1rem !important}
+.scroll-divider{font-size:15px !important}
+.scroll-hint{font-size:1rem !important}
+.map-loading-text{font-size:1.3rem !important}
+.s6-t{font-size:clamp(2rem,3.8vw,3.2rem) !important}
+.s6-s{font-size:13px !important;letter-spacing:4px !important}
+.s6-pill{font-size:13px !important}
+.intro-enter{font-size:14px !important;letter-spacing:4px !important}
+.il.l1{font-size:clamp(1rem,2vw,1.4rem) !important}
+.il.l2{font-size:clamp(2.4rem,5vw,4.4rem) !important}
+.il.l3{font-size:clamp(1rem,1.8vw,1.3rem) !important}
+.intro-sub{font-size:clamp(1rem,1.8vw,1.25rem) !important}
+.map-preloader{position:absolute;inset:0;z-index:50;background:#1a0e06;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s ease,visibility .8s}
+.map-preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.map-quill{font-size:48px;animation:quillWrite 1.2s ease-in-out infinite}
+@keyframes quillWrite{0%,100%{transform:rotate(-10deg) translateY(0)}50%{transform:rotate(5deg) translateY(-8px)}}
+.map-loading-text{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:rgba(180,140,80,.7);margin-top:16px;letter-spacing:2px}
+.map-loading-bar{width:200px;height:2px;background:rgba(180,140,80,.15);border-radius:2px;margin-top:14px;overflow:hidden}
+.map-loading-fill{height:100%;background:linear-gradient(to right,#b48c50,#e8c87a);border-radius:2px;width:0;transition:width .1s linear}
+
+/* Scroll container — the parchment roll */
+.scroll-roll-top{width:min(92vw,920px);height:28px;flex-shrink:0;background:linear-gradient(to bottom,#6b4a20,#8b6030,#a07840);border-radius:12px 12px 0 0;box-shadow:0 4px 20px rgba(0,0,0,.6),inset 0 2px 4px rgba(255,255,255,.1);position:relative;z-index:10;margin-top:32px}
+.scroll-roll-top::before,.scroll-roll-top::after{content:'';position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#c09050,#6b3a10);box-shadow:0 2px 8px rgba(0,0,0,.5),inset 0 1px 3px rgba(255,255,255,.15)}
+.scroll-roll-top::before{left:-12px}
+.scroll-roll-top::after{right:-12px}
+
+/* Scrollable parchment body */
+.scroll-body{width:min(92vw,920px);flex:1;overflow-y:auto;overflow-x:hidden;background:
+  repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(139,100,50,.06) 28px,rgba(139,100,50,.06) 29px),
+  linear-gradient(160deg,#f4e4c0 0%,#e8d4a8 20%,#dfc890 40%,#e6d4a4 60%,#f0e0b8 80%,#ead8a8 100%);
+position:relative;box-shadow:inset 4px 0 12px rgba(0,0,0,.15),inset -4px 0 12px rgba(0,0,0,.15),0 0 40px rgba(0,0,0,.4);cursor:ns-resize}
+.scroll-body::-webkit-scrollbar{width:6px}
+.scroll-body::-webkit-scrollbar-track{background:rgba(100,60,20,.2)}
+.scroll-body::-webkit-scrollbar-thumb{background:rgba(139,90,40,.4);border-radius:3px}
+
+/* Paper texture overlay */
+.scroll-body::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+opacity:.6}
+
+/* Burn/vignette edges on parchment */
+.scroll-body::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:2;
+background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(80,40,10,.18) 80%,rgba(60,25,5,.35) 100%)}
+
+/* Bottom roll */
+.scroll-roll-bottom{width:min(92vw,920px);height:28px;flex-shrink:0;background:linear-gradient(to top,#6b4a20,#8b6030,#a07840);border-radius:0 0 12px 12px;box-shadow:0 -4px 20px rgba(0,0,0,.6),inset 0 -2px 4px rgba(255,255,255,.1);position:relative;z-index:10;margin-bottom:32px}
+.scroll-roll-bottom::before,.scroll-roll-bottom::after{content:'';position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#c09050,#6b3a10);box-shadow:0 2px 8px rgba(0,0,0,.5)}
+.scroll-roll-bottom::before{left:-12px}
+.scroll-roll-bottom::after{right:-12px}
+
+/* Scroll hint */
+.scroll-hint{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',serif;font-size:.8rem;letter-spacing:2px;color:rgba(139,90,40,.5);font-style:italic;animation:hintFade 2s ease-in-out infinite;pointer-events:none;z-index:20;white-space:nowrap}
+@keyframes hintFade{0%,100%{opacity:.4;transform:translateX(-50%) translateY(0)}50%{opacity:.8;transform:translateX(-50%) translateY(-4px)}}
+
+/* Content inside scroll */
+.scroll-content{position:relative;z-index:5;padding:32px 40px 48px}
+
+/* Back nav on paper */
+.map-nav{font-family:'Cormorant Garamond',serif;font-size:.85rem;letter-spacing:2px;font-style:italic;color:rgba(100,60,20,.6);cursor:none;transition:color .2s;display:inline-flex;align-items:center;gap:6px;margin-bottom:20px}
+.map-nav:hover{color:rgba(100,60,20,.9)}
+
+/* Map header — cartouche style */
+.map-cartouche{text-align:center;margin-bottom:28px}
+.map-cartouche-inner{display:inline-block;border:2px solid rgba(139,90,40,.35);border-radius:4px;padding:12px 36px;position:relative;background:rgba(180,130,60,.06)}
+.map-cartouche-inner::before,.map-cartouche-inner::after{content:'✦';position:absolute;top:50%;transform:translateY(-50%);font-size:10px;color:rgba(139,90,40,.4)}
+.map-cartouche-inner::before{left:8px}
+.map-cartouche-inner::after{right:8px}
+.map-t{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:600;color:#4a2c0a;letter-spacing:3px;text-transform:uppercase;margin-bottom:2px}
+.map-s{font-family:'Cormorant Garamond',serif;font-size:.8rem;letter-spacing:3px;text-transform:uppercase;color:rgba(100,60,20,.55);font-style:italic}
+
+/* The actual map SVG container */
+.map-cont{position:relative;width:100%;animation:scrollReveal .6s ease both}
+@keyframes scrollReveal{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.map-svg{width:100%;height:auto;display:block}
+.map-pins{position:absolute;inset:0;pointer-events:none}
+
+/* Pin styles — parchment-appropriate */
+.mp{position:absolute;pointer-events:all;cursor:none;transform:translate(-50%,-50%)}
+.mp-dot{width:14px;height:14px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:6px;transition:transform .3s;animation:dotpulse 2.5s ease-in-out infinite}
+.mp:hover .mp-dot{transform:scale(1.6)}
+.mp:hover .mp-pop{opacity:1;transform:translateX(-50%) translateY(-6px)}
+@keyframes dotpulse{0%,100%{box-shadow:0 0 0 0 currentColor}50%{box-shadow:0 0 0 4px rgba(0,0,0,0)}}
+.mp-pop{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(0);background:rgba(240,220,170,.97);border:1px solid rgba(139,90,40,.35);border-radius:6px;padding:9px 13px;min-width:155px;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;box-shadow:2px 4px 12px rgba(80,40,10,.25);z-index:50}
+.mp-pop-t{font-family:'Cormorant Garamond',serif;font-size:.9rem;color:#3a1f06;margin-bottom:2px;font-weight:600}
+.mp-pop-r{font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;font-family:'Jost',sans-serif}
+.mp-pop-f{font-size:10.5px;color:rgba(80,40,10,.7);line-height:1.55;font-family:'Cormorant Garamond',serif;font-style:italic}
+
+/* Legend */
+.map-legend{margin-top:28px;border-top:1px solid rgba(139,90,40,.2);padding-top:18px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.legend-item{font-family:'Cormorant Garamond',serif;font-size:.82rem;color:rgba(80,50,15,.65);font-style:italic;display:flex;align-items:center;gap:6px}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* Decorative dividers */
+.scroll-divider{text-align:center;color:rgba(139,90,40,.3);font-size:13px;letter-spacing:6px;margin:16px 0;font-family:'Cormorant Garamond',serif}
+
+/* SCREEN 6 - JAR */
+#screen6{background:#02010a}
+.s6-nav{position:absolute;top:20px;left:32px;font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28);cursor:none;z-index:20;transition:color .2s}
+.s6-nav:hover{color:rgba(255,255,255,.65)}
+.s6-t{font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,3.2vw,2.6rem);font-weight:300;text-align:center;color:#f5f0e8;margin-bottom:5px;animation:fadeUp .8s .1s both}
+.s6-s{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.22);text-align:center;margin-bottom:42px;animation:fadeUp .8s .2s both}
+.jar-wrap{position:relative;width:195px;height:255px;animation:fadeUp .8s .3s both}
+.jar-svg{width:100%;height:100%}
+.firefly{position:absolute;border-radius:50%;animation:ffloat ease-in-out infinite;pointer-events:none}
+@keyframes ffloat{0%,100%{transform:translate(0,0) scale(1);opacity:.6}25%{transform:translate(12px,-18px) scale(1.2);opacity:1}50%{transform:translate(-8px,-30px) scale(.8);opacity:.42}75%{transform:translate(16px,-12px) scale(1.1);opacity:.82}}
+.s6-pills{margin-top:28px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:540px;animation:fadeUp .8s .5s both}
+.s6-pill{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:50px;padding:8px 16px;font-size:11px;font-weight:300;color:rgba(255,255,255,.42);display:flex;align-items:center;gap:7px}
+.s6-sh{margin-top:24px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.16);cursor:none;transition:color .2s;animation:fadeUp .8s .6s both}
+.s6-sh:hover{color:rgba(255,255,255,.5)}
+
+/* VOICE */
+.voice-btn{position:fixed;bottom:24px;right:24px;z-index:200;width:50px;height:50px;border-radius:50%;background:rgba(255,215,100,.09);border:1px solid rgba(255,215,100,.22);display:flex;align-items:center;justify-content:center;font-size:19px;cursor:none;transition:all .3s}
+.voice-btn:hover{background:rgba(255,215,100,.16);border-color:rgba(255,215,100,.45);transform:scale(1.08)}
+.voice-btn.speaking{animation:vpulse .8s ease-in-out infinite;background:rgba(255,215,100,.18)}
+@keyframes vpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,215,100,.35)}50%{box-shadow:0 0 0 11px rgba(255,215,100,0)}}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<canvas id="starCanvas"></canvas>
+<div class="burst" id="burst"></div>
+<div class="voice-btn" id="voiceBtn" onclick="toggleVoice()">🎙️</div>
+
+<!-- SCREEN 0: OPENING -->
+<div class="screen active" id="screen0">
+  <div class="castle-wrap">
+    <div class="rays" id="raysEl"></div>
+    <span class="castle">🏰</span>
+  </div>
+  <div class="il l1">Disney Memoria Presents</div>
+  <h1 class="il l2">Some things <em>never</em> change —<br>and I'm holding on tight to you.</h1>
+  <p class="il l3">A love letter to the child you still are</p>
+  <p class="intro-sub">You grew up fast. The world asked you to.<br>But somewhere between <strong>who you were</strong> and who you became,<br>these stories were waiting — <em>patient as magic, warm as castle lights.</em><br>They still know your name.</p>
+  <div class="intro-enter" onclick="goTo(1)"><span class="sparkle">✦</span> Enter the magic <span class="sparkle">✦</span></div>
+</div>
+
+<!-- SCREEN 1: MOOD -->
+<div class="screen" id="screen1">
+  <div class="s1-logo">✦ Disney Memoria ✦</div>
+  <h1 class="s1-title">How are you feeling<br><em>tonight?</em></h1>
+  <p class="s1-sub">Choose a feeling — find your story</p>
+  <div class="orbs-wrap">
+    <div class="orb o-lonely"      data-mood="lonely"      onclick="selectMood(this)"><div class="orb-e">🌊</div><div class="orb-l">Lonely</div></div>
+    <div class="orb o-hopeful"     data-mood="hopeful"     onclick="selectMood(this)"><div class="orb-e">🌅</div><div class="orb-l">Hopeful</div></div>
+    <div class="orb o-brave"       data-mood="brave"       onclick="selectMood(this)"><div class="orb-e">🔥</div><div class="orb-l">Brave</div></div>
+    <div class="orb o-nostalgic"   data-mood="nostalgic"   onclick="selectMood(this)"><div class="orb-e">🌙</div><div class="orb-l">Nostalgic</div></div>
+    <div class="orb o-excited"     data-mood="excited"     onclick="selectMood(this)"><div class="orb-e">⚡</div><div class="orb-l">Excited</div></div>
+    <div class="orb o-adventurous" data-mood="adventurous" onclick="selectMood(this)"><div class="orb-e">🧭</div><div class="orb-l">Adventurous</div></div>
+  </div>
+  <div class="nav-row">
+    <div class="nav-chip" onclick="goTo(5)">🗺 World Map</div>
+    <div class="nav-chip" onclick="goTo(6)">🫙 Memory Jar</div>
+  </div>
+
+  <!-- Digital Presence — below moods & world map nav -->
+  <div class="s1-digital">
+    <div class="s1-digital-label">Current Digital Presence</div>
+    <div class="s1-digital-row">
+      <div class="s1-digital-card">
+        <div class="s1-digital-icon">🏰</div>
+        <div class="s1-digital-info">
+          <div class="s1-digital-name">Disney Corporate</div>
+          <div class="s1-digital-desc">The official home of Walt Disney Company — news, stories & legacy</div>
+        </div>
+      </div>
+      <div class="s1-digital-card">
+        <div class="s1-digital-icon">▶️</div>
+        <div class="s1-digital-info">
+          <div class="s1-digital-name">Disney+ Streaming</div>
+          <div class="s1-digital-desc">Your portal to every film, series & original — watch anywhere</div>
+        </div>
+      </div>
+      <div class="s1-digital-card">
+        <div class="s1-digital-icon">🎢</div>
+        <div class="s1-digital-info">
+          <div class="s1-digital-name">Parks & Experiences</div>
+          <div class="s1-digital-desc">Plan your visit to the most magical places on Earth</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 2: MOOD WORLD -->
+<div class="screen" id="screen2">
+  <div class="s2-bg" id="s2bg"></div>
+  <div class="particles" id="particles"></div>
+  <div class="s2-back" onclick="goTo(1)">← back</div>
+  <div class="s2-content">
+    <div class="s2-label" id="s2Label"></div>
+    <h2 class="s2-hl" id="s2Hl"></h2>
+    <p class="s2-tl" id="s2Tl"></p>
+    <div class="portals" id="portals"></div>
+
+    <!-- Castle background image -->
+    <div class="s2-castle-bg">
+      <div class="s2-castle-bg-img"></div>
+      <div class="s2-castle-bg-overlay"></div>
+      <div class="s2-castle-bg-text">
+        <div class="s2-castle-eyebrow">Walt Disney</div>
+        <div class="s2-castle-title">Where every story<br><em>begins</em></div>
+        <div class="s2-castle-sub">100 years of magic. Still waiting for you.</div>
+      </div>
+    </div>
+
+    <div class="s2-btns">
+      <div class="s2-btn" onclick="goTo(5)">🗺 World Map</div>
+      <div class="s2-btn" onclick="goTo(6)">🫙 Memory Jar</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 3: STORY -->
+<div class="screen" id="screen3">
+  <div class="s3l" id="s3l">
+    <div class="s3l-bg" id="s3lbg"></div>
+    <div class="s3l-ov"></div>
+    <div class="s3-pw">
+      <div style="position:relative;display:inline-block">
+        <span class="s3-pe" id="s3pe"></span>
+        <span class="s3-orb" id="s3orb"></span>
+      </div>
+    </div>
+    <div class="s3-pn" id="s3pn"></div>
+    <div class="s3-fn" id="s3fn"></div>
+    <div class="s3-cbtn" onclick="openCard()">✦ Princess Card</div>
+  </div>
+  <div class="s3r" id="s3r">
+    <div class="s3-top">
+      <div class="s3-bb" onclick="goTo(2)">← back to worlds</div>
+      <div class="s3-tt" id="s3tt"></div>
+    </div>
+    <div class="s3-intro">
+      <div class="s3-bc">This story found you because</div>
+      <p class="s3-rs" id="s3rs"></p>
+      <h2 class="s3-mt" id="s3mt"></h2>
+      <div class="s3-yr" id="s3yr"></div>
+      <div class="ch-lbl">Her story, in her own words</div>
+      <div id="chCont"></div>
+    </div>
+    <div class="s3-acts">
+      <button class="s3-bp">▷ &nbsp;Watch on Disney+</button>
+      <div class="s3-br">
+        <button class="s3-bs" onclick="addJar();goTo(6)">🫙 Keep in Jar</button>
+        <button class="s3-bs" onclick="openCard()">✦ Princess Card</button>
+        <button class="s3-bs">↗ Share</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 4: PRINCESS CARD -->
+<div class="screen" id="screen4">
+  <div class="card-back-nav" onclick="goTo(3)">← back to story</div>
+  <p style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:rgba(255,255,255,.25);font-style:italic;margin-bottom:14px;animation:fadeUp .5s both">Hover to reveal her feminist reread</p>
+  <div class="card-scene">
+    <div class="card-inner">
+      <div class="card-face card-front" id="cardFront"></div>
+      <div class="card-face card-back-face" id="cardBack"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 5: MAP — OLD PAPER SCROLL -->
+<div class="screen" id="screen5">
+
+  <!-- Preloader -->
+  <div class="map-preloader" id="mapPreloader">
+    <div class="map-quill">🪶</div>
+    <div class="map-loading-text">Unrolling the ancient chart…</div>
+    <div class="map-loading-bar"><div class="map-loading-fill" id="mapFill"></div></div>
+  </div>
+
+  <!-- Scroll wrapper -->
+  <div class="map-scroll-outer">
+    <div class="scroll-roll-top"></div>
+
+    <div class="scroll-body" id="scrollBody">
+      <div class="scroll-content">
+
+        <div class="map-nav" onclick="goBackMap()">← roll it back up</div>
+
+        <div class="map-cartouche">
+          <div class="map-cartouche-inner">
+            <div class="map-t">The Disney World</div>
+            <div class="map-s">A chart of all the kingdoms, far & near</div>
+          </div>
+        </div>
+
+        <div class="scroll-divider">✦ ✦ ✦</div>
+
+        <div class="map-cont">
+          <svg class="map-svg" viewBox="0 0 860 520" xmlns="http://www.w3.org/2000/svg">
+            <!-- Parchment base -->
+            <defs>
+              <filter id="paperTex" x="-5%" y="-5%" width="110%" height="110%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/>
+                <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+                <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blend"/>
+                <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+              </filter>
+              <filter id="inkBleed">
+                <feGaussianBlur stdDeviation="0.3"/>
+              </filter>
+              <radialGradient id="burnEdge" cx="50%" cy="50%" r="55%">
+                <stop offset="0%" stop-color="transparent"/>
+                <stop offset="80%" stop-color="rgba(80,40,10,0.05)"/>
+                <stop offset="100%" stop-color="rgba(60,20,5,0.2)"/>
+              </radialGradient>
+            </defs>
+
+            <!-- Map background — aged parchment tones -->
+            <rect width="860" height="520" fill="#e8d098" rx="4"/>
+            <rect width="860" height="520" fill="url(#burnEdge)" rx="4"/>
+
+            <!-- Aged stain patches -->
+            <ellipse cx="120" cy="80" rx="90" ry="40" fill="rgba(160,110,40,0.07)"/>
+            <ellipse cx="720" cy="440" rx="110" ry="50" fill="rgba(120,80,30,0.06)"/>
+            <ellipse cx="430" cy="260" rx="200" ry="100" fill="rgba(180,130,60,0.04)"/>
+            <ellipse cx="60" cy="380" rx="60" ry="80" fill="rgba(140,90,30,0.05)"/>
+            <ellipse cx="800" cy="120" rx="70" ry="55" fill="rgba(100,65,20,0.06)"/>
+
+            <!-- Border — double rule cartouche -->
+            <rect x="12" y="12" width="836" height="496" rx="6" fill="none" stroke="rgba(100,60,20,0.45)" stroke-width="2"/>
+            <rect x="18" y="18" width="824" height="484" rx="4" fill="none" stroke="rgba(100,60,20,0.2)" stroke-width="1"/>
+
+            <!-- Corner ornaments -->
+            <g fill="none" stroke="rgba(100,60,20,0.35)" stroke-width="1">
+              <path d="M12 40 Q28 28 40 12"/><path d="M820 12 Q832 28 848 40"/>
+              <path d="M12 480 Q28 492 40 508"/><path d="M820 508 Q832 492 848 480"/>
+            </g>
+            <g fill="rgba(100,60,20,0.3)" font-size="14" font-family="serif">
+              <text x="14" y="16">✦</text><text x="838" y="16">✦</text>
+              <text x="14" y="512">✦</text><text x="838" y="512">✦</text>
+            </g>
+
+            <!-- Ocean — lighter parchment wash with hatching -->
+            <rect x="20" y="20" width="820" height="480" fill="rgba(180,155,100,0.15)" rx="2"/>
+            <!-- Ocean hatch lines (hand-drawn vibe) -->
+            <g stroke="rgba(100,70,30,0.06)" stroke-width="0.8" fill="none">
+              <line x1="50" y1="60" x2="80" y2="55"/><line x1="55" y1="68" x2="85" y2="63"/>
+              <line x1="790" y1="80" x2="820" y2="75"/><line x1="792" y1="88" x2="822" y2="83"/>
+              <line x1="50" y1="350" x2="80" y2="345"/><line x1="53" y1="358" x2="83" y2="353"/>
+              <line x1="400" y1="450" x2="430" y2="445"/><line x1="402" y1="458" x2="432" y2="453"/>
+              <line x1="700" y1="420" x2="730" y2="415"/><line x1="703" y1="428" x2="733" y2="423"/>
+            </g>
+
+            <!-- CONTINENTS — hand-drawn, ink-on-parchment style -->
+            <!-- N. America -->
+            <path d="M72 44 Q134 28 184 44 Q215 58 224 94 Q234 132 218 166 Q198 196 173 206 Q147 211 121 196 Q91 176 76 147 Q56 113 59 79 Q61 57 72 44Z"
+                  fill="#c8a860" stroke="rgba(80,45,10,0.55)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <text x="142" y="124" fill="rgba(60,30,8,0.55)" font-size="8" font-family="serif" text-anchor="middle" letter-spacing="1.5" font-style="italic">N. America</text>
+
+            <!-- S. America -->
+            <path d="M146 217 Q172 209 187 225 Q197 249 192 289 Q187 333 172 362 Q157 387 137 382 Q116 372 109 343 Q101 308 106 269 Q111 239 125 223Z"
+                  fill="#c8a860" stroke="rgba(80,45,10,0.5)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <text x="152" y="300" fill="rgba(60,30,8,0.5)" font-size="7.5" font-family="serif" text-anchor="middle" letter-spacing="1" font-style="italic">S. America</text>
+
+            <!-- Caribbean dots -->
+            <circle cx="238" cy="157" r="4.5" fill="#c4a050" stroke="rgba(80,45,10,0.4)" stroke-width="1"/>
+            <circle cx="252" cy="171" r="3.5" fill="#c4a050" stroke="rgba(80,45,10,0.35)" stroke-width="1"/>
+
+            <!-- Europe -->
+            <path d="M336 53 Q376 37 427 51 Q458 61 468 79 Q478 105 457 124 Q437 143 417 139 Q397 134 377 149 Q363 159 349 145 Q329 129 324 105 Q319 79 336 53Z"
+                  fill="#c8a860" stroke="rgba(80,45,10,0.55)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <text x="388" y="104" fill="rgba(60,30,8,0.55)" font-size="8" font-family="serif" text-anchor="middle" letter-spacing="1.5" font-style="italic">Europe</text>
+
+            <!-- UK -->
+            <path d="M316 69 Q330 59 336 75 Q330 89 316 85Z" fill="#c4a050" stroke="rgba(80,45,10,0.4)" stroke-width="1" filter="url(#inkBleed)"/>
+            <!-- Scandinavia -->
+            <path d="M380 41 Q400 27 420 31 Q430 43 420 53 Q406 57 392 53Z" fill="#c4a050" stroke="rgba(80,45,10,0.4)" stroke-width="1" filter="url(#inkBleed)"/>
+
+            <!-- Middle East -->
+            <path d="M466 95 Q496 89 516 105 Q526 125 511 139 Q491 149 471 139 Q457 129 457 109Z"
+                  fill="#c8a860" stroke="rgba(80,45,10,0.45)" stroke-width="1.5" filter="url(#inkBleed)"/>
+
+            <!-- Africa -->
+            <path d="M366 169 Q397 159 427 169 Q453 187 455 231 Q452 279 431 307 Q411 331 386 326 Q361 316 351 287 Q338 253 344 215 Q348 187 366 169Z"
+                  fill="#c8a860" stroke="rgba(80,45,10,0.5)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <text x="396" y="256" fill="rgba(60,30,8,0.5)" font-size="7.5" font-family="serif" text-anchor="middle" letter-spacing="1" font-style="italic">Africa</text>
+
+            <!-- Asia -->
+            <path d="M506 41 Q578 27 658 35 Q707 47 724 75 Q734 105 718 133 Q698 157 662 162 Q622 164 592 152 Q562 142 536 127 Q510 111 498 89 Q490 65 506 41Z"
+                  fill="#c8a860" stroke="rgba(80,45,10,0.55)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <text x="608" y="97" fill="rgba(60,30,8,0.55)" font-size="8" font-family="serif" text-anchor="middle" letter-spacing="1.5" font-style="italic">Asia</text>
+
+            <!-- India -->
+            <path d="M568 167 Q588 161 603 171 Q611 191 598 215 Q584 229 569 219 Q556 205 556 187Z"
+                  fill="#c4a050" stroke="rgba(80,45,10,0.4)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <!-- SE Asia -->
+            <path d="M650 161 Q680 156 700 169 Q710 186 695 200 Q678 208 660 200 Q648 188 648 173Z"
+                  fill="#c4a050" stroke="rgba(80,45,10,0.4)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <!-- Japan -->
+            <path d="M722 85 Q731 77 739 85 Q741 96 732 102 Q723 100 722 91Z"
+                  fill="#c4a050" stroke="rgba(80,45,10,0.35)" stroke-width="1.5"/>
+
+            <!-- Australia -->
+            <path d="M670 278 Q710 267 745 279 Q769 296 767 327 Q762 354 737 364 Q709 370 684 358 Q659 344 655 315 Q652 293 670 278Z"
+                  fill="#c8a860" stroke="rgba(80,45,10,0.45)" stroke-width="1.5" filter="url(#inkBleed)"/>
+
+            <!-- Polynesia islands -->
+            <circle cx="135" cy="316" r="6" fill="#c4a050" stroke="rgba(80,45,10,0.35)" stroke-width="1.2"/>
+            <circle cx="108" cy="330" r="4" fill="#c4a050" stroke="rgba(80,45,10,0.3)" stroke-width="1"/>
+            <circle cx="155" cy="335" r="3" fill="#c4a050" stroke="rgba(80,45,10,0.3)" stroke-width="1"/>
+
+            <!-- Trade route lines — dotted, hand-inked look -->
+            <g stroke="rgba(80,45,10,0.18)" stroke-width="1.2" fill="none" stroke-dasharray="5 7">
+              <path d="M226 144 Q305 170 376 162 Q457 153 516 125"/>
+              <path d="M396 147 Q406 210 386 266"/>
+              <path d="M135 316 Q190 335 260 318 Q300 306 330 288"/>
+              <path d="M508 41 Q450 25 390 38"/>
+            </g>
+
+            <!-- Compass rose — ornate, period style -->
+            <g transform="translate(800,468)">
+              <circle cx="0" cy="0" r="28" fill="rgba(200,165,80,0.15)" stroke="rgba(80,45,10,0.3)" stroke-width="1"/>
+              <circle cx="0" cy="0" r="20" fill="none" stroke="rgba(80,45,10,0.2)" stroke-width="0.8"/>
+              <!-- Points -->
+              <polygon points="0,-28 3,-8 0,-14 -3,-8" fill="rgba(80,45,10,0.7)"/>
+              <polygon points="0,28 3,8 0,14 -3,8" fill="rgba(80,45,10,0.4)"/>
+              <polygon points="-28,0 -8,3 -14,0 -8,-3" fill="rgba(80,45,10,0.4)"/>
+              <polygon points="28,0 8,3 14,0 8,-3" fill="rgba(80,45,10,0.4)"/>
+              <!-- Intercardinal -->
+              <polygon points="0,-20 2,-10 0,-13 -2,-10" fill="rgba(80,45,10,0.25)" transform="rotate(45)"/>
+              <polygon points="0,-20 2,-10 0,-13 -2,-10" fill="rgba(80,45,10,0.25)" transform="rotate(135)"/>
+              <polygon points="0,-20 2,-10 0,-13 -2,-10" fill="rgba(80,45,10,0.25)" transform="rotate(225)"/>
+              <polygon points="0,-20 2,-10 0,-13 -2,-10" fill="rgba(80,45,10,0.25)" transform="rotate(315)"/>
+              <circle cx="0" cy="0" r="3" fill="rgba(80,45,10,0.5)"/>
+              <text x="0" y="-33" fill="rgba(60,30,8,0.6)" font-size="8" text-anchor="middle" font-family="serif" font-weight="bold">N</text>
+              <text x="0" y="40" fill="rgba(60,30,8,0.5)" font-size="7" text-anchor="middle" font-family="serif">S</text>
+              <text x="32" y="4" fill="rgba(60,30,8,0.5)" font-size="7" text-anchor="middle" font-family="serif">E</text>
+              <text x="-30" y="4" fill="rgba(60,30,8,0.5)" font-size="7" text-anchor="middle" font-family="serif">W</text>
+            </g>
+
+            <!-- Scale bar -->
+            <g transform="translate(40,490)">
+              <line x1="0" y1="0" x2="80" y2="0" stroke="rgba(80,45,10,0.4)" stroke-width="1.5"/>
+              <line x1="0" y1="-5" x2="0" y2="5" stroke="rgba(80,45,10,0.4)" stroke-width="1.5"/>
+              <line x1="80" y1="-5" x2="80" y2="5" stroke="rgba(80,45,10,0.4)" stroke-width="1.5"/>
+              <text x="40" y="-8" fill="rgba(60,30,8,0.45)" font-size="7" text-anchor="middle" font-family="serif" font-style="italic">Scale of Kingdoms</text>
+            </g>
+
+            <!-- Title cartouche bottom-left -->
+            <rect x="26" y="464" width="150" height="38" rx="4" fill="rgba(200,165,80,0.2)" stroke="rgba(100,60,20,0.3)" stroke-width="1"/>
+            <text x="101" y="479" fill="rgba(60,30,8,0.55)" font-size="7" font-family="serif" text-anchor="middle" letter-spacing="2" font-style="italic">Here be</text>
+            <text x="101" y="494" fill="rgba(60,30,8,0.65)" font-size="9" font-family="serif" text-anchor="middle" letter-spacing="1" font-weight="bold">DISNEY STORIES</text>
+          </svg>
+
+          <!-- Pins overlay -->
+          <div class="map-pins" id="mapPins"></div>
+        </div>
+
+        <div class="scroll-divider" style="margin-top:24px">✦ ✦ ✦</div>
+
+        <!-- Legend -->
+        <div class="map-legend" id="mapLegend"></div>
+
+        <!-- Bottom breathing room -->
+        <div style="height:40px"></div>
+
+      </div>
+    </div>
+
+    <div class="scroll-roll-bottom"></div>
+    <div class="scroll-hint">↕ scroll to explore the kingdoms</div>
+  </div>
+</div>
+
+<!-- SCREEN 6: JAR -->
+<div class="screen" id="screen6">
+  <div class="s6-nav" onclick="goTo(2)">← back</div>
+  <h2 class="s6-t">Your Memory Jar</h2>
+  <p class="s6-s">Every feeling. Every story. Kept safe.</p>
+  <div class="jar-wrap" id="jarWrap">
+    <svg class="jar-svg" viewBox="0 0 220 280" fill="none">
+      <rect x="60" y="20" width="100" height="22" rx="6" fill="rgba(255,255,255,.065)" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+      <path d="M40 60 Q30 100 30 160 Q30 240 110 248 Q190 240 190 160 Q190 100 180 60Z" fill="rgba(255,255,255,.028)" stroke="rgba(255,255,255,.09)" stroke-width="1.5"/>
+      <rect x="55" y="42" width="110" height="20" rx="4" fill="rgba(255,255,255,.038)" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+      <path d="M55 80 Q50 120 52 170" stroke="rgba(255,255,255,.055)" stroke-width="7" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="s6-pills" id="s6Pills"></div>
+  <div class="s6-sh">✦ Share your Disney soul ✦</div>
+</div>
+<script>
+// CURSOR
+const cur=document.getElementById('cursor'),curR=document.getElementById('cursorRing');
+document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';curR.style.left=e.clientX+'px';curR.style.top=e.clientY+'px'});
+
+// STARS
+const cv=document.getElementById('starCanvas'),ct=cv.getContext('2d');let stars=[];
+function rsz(){cv.width=innerWidth;cv.height=innerHeight;stars=Array.from({length:180},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.2+.2,a:Math.random(),s:Math.random()*.004+.001}))}
+function dstars(){ct.clearRect(0,0,cv.width,cv.height);stars.forEach(s=>{s.a+=s.s;const al=(Math.sin(s.a)+1)/2*.65+.08;ct.beginPath();ct.arc(s.x,s.y,s.r,0,Math.PI*2);ct.fillStyle=`rgba(255,255,255,${al})`;ct.fill()});requestAnimationFrame(dstars)}
+rsz();window.addEventListener('resize',rsz);dstars();
+
+// RAYS
+(()=>{const el=document.getElementById('raysEl');if(!el)return;for(let i=0;i<16;i++){const s=document.createElement('span');s.style.transform=`translateX(-50%) rotate(${i*22.5}deg)`;el.appendChild(s)}})();
+
+// NAV
+let curScreen=0,prevScreen=0,curMood=null,curFilm=null,jar=[];
+function goTo(n){document.querySelectorAll('.screen').forEach((s,i)=>s.classList.toggle('active',i===n));prevScreen=curScreen;curScreen=n;if(n===6)buildJar();if(n===5)buildMap()}
+function goBackMap(){goTo(prevScreen<=0?1:prevScreen)}
+
+// MOOD DATA
+const M={
+  lonely:{c:'#4a6fa5',bg:'radial-gradient(ellipse at 30% 20%,#1a2d5a,#06080f)',p:'#6a8fc5',label:'Feeling lonely',hl:'Stories that <em>understand</em> you',tl:"You don't have to explain it. These worlds already know.",
+  films:[
+    {e:'🐠',t:'Finding Nemo',y:'Disney · Pixar · 2003',r:'About crossing an entire ocean because love refuses to give up.',pr:'🐠',pn:'Dory',ob:'💙',bg:'linear-gradient(135deg,#0a3a6a,#041520)',lb:'radial-gradient(ellipse at 40% 60%,#0a3060,#020810)',
+    card:{pw:'The gift of radical forgiveness — she forgets hurt as fast as pain',st:'Fearless optimism, pure compassion, zero self-pity',wk:'Short-term memory loss leaves her vulnerable',fe:'Being truly, permanently forgotten by those she loves',al:['Marlin','Nemo','Mr. Ray'],en:['Shark Crew','The deep-sea dark'],fm:"Dory rewrites the helpless sidekick entirely. Her neurodivergence is not fixed — it's the whole point. She is the protagonist of her own rescue.",rar:'Legendary',q:'"Just keep swimming."'},
+    ch:[{a:'Act I',ti:"I forget everything — except how to keep going",ob:'🌊',pv:"Every morning the world is new again. I don't know your name yet. But I know this: the ocean is wide and I am not afraid of it. Maybe forgetting is its own kind of freedom.",q:'"Just keep swimming."'},{a:'Act II',ti:"He needed me and I didn't even know it",ob:'🐡',pv:"There was a small fish who had lost his father, or a father who had lost his son. I couldn't always tell which. But I remembered that something mattered. So we kept swimming.",q:'"I remembered something! Not everything... but something."'},{a:'Act III',ti:"Home is a feeling, not a place",ob:'🐚',pv:"When we found him and the reef glittered, I understood: I had been searching too, this whole time. I found something I didn't know I'd lost.",q:'"I don\'t want to forget this. I don\'t want to forget you."'}]},
+    {e:'🌺',t:'Lilo & Stitch',y:'Disney · 2002',r:'About being the odd one out and finding your ohana anyway.',pr:'🌺',pn:'Lilo',ob:'📸',bg:'linear-gradient(135deg,#1a3a5a,#060810)',lb:'radial-gradient(ellipse at 40% 60%,#0a2040,#020408)',
+    card:{pw:'The ability to love something dangerous until it becomes gentle',st:'Fierce loyalty, radical acceptance, grief transformed into belonging',wk:'Grief makes her unpredictable and isolated',fe:'Being abandoned again — like she was when her parents died',al:['Stitch','Nani','Jumba & Pleakley'],en:['Gantu','Loss'],fm:"Lilo's emotional intelligence is treated as wisdom. A grieving Hawaiian child leads the entire film's moral. Her 'weirdness' is never fixed — it's the point.",rar:'Epic',q:'"Ohana means family. Nobody gets left behind."'},
+    ch:[{a:'Act I',ti:"Nobody wanted me. So I wanted a monster.",ob:'🛸',pv:"They called me weird. Too loud, too strange, too much. So when a blue creature crash-landed and was just as wrong as me — I said: this one is mine.",q:'"This is my family. I found it all on my own."'},{a:'Act II',ti:"He was built to destroy. I gave him something to protect.",ob:'🏄',pv:"Stitch was programmed for chaos. But I gave him Elvis and surfboards and photographs and a reason to stay. The part they couldn't code out — chose us.",q:'"Ohana means family."'},{a:'Act III',ti:"Broken can still be good",ob:'💙',pv:"When they came to take him, I said no. He was mine and I was his. That's what ohana means — not the perfect ones. Especially the broken ones.",q:'"I\'m lost."'}]},
+    {e:'🤖',t:'WALL·E',y:'Disney · Pixar · 2008',r:'A love born from loneliness — proving connection always finds a way.',pr:'🤖',pn:'EVE',ob:'🌱',bg:'linear-gradient(135deg,#2a2a0a,#0a0a04)',lb:'radial-gradient(ellipse at 40% 60%,#1a1a06,#040402)',
+    card:{pw:'Directed energy — can reshape matter with a thought',st:'Precision, mission clarity, fierce protection of what she loves',wk:'Shuts down emotionally when override-mode takes over',fe:'Failing her mission. Being alone after knowing love.',al:['WALL·E','M-O','The Captain'],en:['AUTO','GO-4'],fm:"EVE is physically stronger than every character in the film. She protects him. The love story inverts the classic Disney dynamic completely.",rar:'Legendary',q:'"WALL·E."'},
+    ch:[{a:'Act I',ti:"I was built to find something. I found him instead.",ob:'⚡',pv:"My directive: find life, return, report. But there was this small rusted machine who held a plant like it was the most precious thing in existence. He was the most alive thing I had ever scanned.",q:'"EVE?"'},{a:'Act II',ti:"What do you do when your mission becomes him",ob:'🌿',pv:"Protocol said take the plant. Logic said return. But he followed me across the galaxy. He held my hand when I was empty. You cannot run a calculation on that.",q:'"WALL·E, plant."'},{a:'Act III',ti:"He taught a dead world how to grow again",ob:'💚',pv:"The directive was life. He showed me what that actually meant. Not biology. Not data. This — the warmth of a hand. The word that means something.",q:'"[holds hand]"'}]}
+  ]},
+  brave:{c:'#c0392b',bg:'radial-gradient(ellipse at 30% 20%,#2a0a08,#06080f)',p:'#e05a4a',label:'Feeling brave',hl:'Stories as <em>fearless</em> as you are',tl:"Courage isn't the absence of fear. These characters knew that.",
+  films:[
+    {e:'🏹',t:'Brave',y:'Disney · Pixar · 2012',r:"About writing your own story when everyone has already written it for you.",pr:'🧡',pn:'Merida',ob:'🏹',bg:'linear-gradient(135deg,#2a0a0a,#060404)',lb:'radial-gradient(ellipse at 40% 60%,#1a0606,#040202)',
+    card:{pw:'Masterful archer — never misses what she truly aims for',st:'Courage, independence, refusal to be defined by anyone else',wk:'Pride. Cannot accept help until it is almost too late.',fe:'Losing her mother — and the love between them',al:["Queen Elinor","The Wisps","Angus"],en:["Mor'du","Her own stubbornness"],fm:"Merida is the first Disney princess to explicitly reject marriage as her story's resolution. Her fight is about authorship — who gets to write her life.",rar:'Epic',q:'"Our fate lives within us. You only have to be brave enough to see it."'},
+    ch:[{a:'Act I',ti:"My bow was my freedom. My arrow, my answer.",ob:'🎯',pv:"They wanted me in a corset and a veil. I had the highlands and my horse and an arrow that always found its mark. My fate was already written, they said. So I said: let me rewrite it.",q:'"I want my freedom!"'},{a:'Act II',ti:"I turned my mother into a bear. Love is complicated.",ob:'🐻',pv:"I gave her a cake to change her fate and didn't know it would change her form. Watching my mother become something frightened — that was my spell. My selfishness, dressed as courage.",q:'"Mum? Are you in there?"'},{a:'Act III',ti:"I stitched us back together with my own hands",ob:'🪡',pv:"The tapestry I had slashed in anger. I had to mend it — not just the cloth but everything between us. When I wrapped it around her and said I loved her, that was the real magic.",q:'"Our fate lives within us."'}]},
+    {e:'🪷',t:'Mulan',y:'Disney · 1998',r:'About choosing truth over safety and fighting for what matters most.',pr:'🪷',pn:'Mulan',ob:'🪖',bg:'linear-gradient(135deg,#3a1a00,#080400)',lb:'radial-gradient(ellipse at 40% 60%,#200e00,#040200)',
+    card:{pw:'Strategic brilliance under pressure — wins by thinking differently',st:'Resourcefulness, determination, love that transcends duty',wk:'Internalised shame about being "not enough"',fe:'Bringing dishonour. Being seen as fundamentally wrong.',al:['Mushu','Cri-Kee','Shang','Khan'],en:['Shan Yu','Imperial conformity'],fm:"Mulan doesn't win by becoming a man — she wins by thinking differently than every man on the battlefield. She predates the term but defines feminist heroism.",rar:'Legendary',q:'"The flower that blooms in adversity is the rarest of all."'},
+    ch:[{a:'Act I',ti:"I took my father's armor and left before dawn",ob:'⚔️',pv:"He was too proud to survive the war. I was too afraid to watch him die trying. So I cut my hair. I took his sword. I rode into the dark, praying the ancestors were watching.",q:'"The flower that blooms in adversity is the most rare and beautiful of all."'},{a:'Act II',ti:"I became the soldier they needed — not the man they thought",ob:'🏔️',pv:"I trained until my hands bled. I fought until I stopped fearing it. Somewhere in the snow I stopped pretending to be Li Shang's soldier and became my own.",q:'"My greatest gift and honor is having you for a daughter."'},{a:'Act III',ti:"I saved China. They still couldn't see me.",ob:'🏮',pv:"I stopped the Huns with a cannon and quick thinking. When they found out I was a woman — they turned away. Until Shang didn't. That mattered most.",q:'"I think you\'re worth fighting for."'}]},
+    {e:'❄️',t:'Frozen',y:'Disney · 2013',r:'About finding that love — not fear — is where your power truly lives.',pr:'❄️',pn:'Elsa',ob:'❄️',bg:'linear-gradient(135deg,#0a1a3a,#040608)',lb:'radial-gradient(ellipse at 40% 60%,#061020,#020406)',
+    card:{pw:'Cryokinesis — can create entire worlds from pure emotion',st:'Self-possession, creativity, deep love expressed through restraint',wk:'Isolation as self-protection becomes self-imprisonment',fe:'Hurting those she loves most. Being truly seen.',al:['Anna','Kristoff','Sven','Olaf'],en:['Hans','The Duke of Weselton','Her own fear'],fm:"Elsa's magic is literally her emotions — the film's message is that repression was always the real curse. Female power is not something to suppress.",rar:'Legendary',q:'"Let it go."'},
+    ch:[{a:'Act I',ti:"Conceal, don't feel. Don't let them see.",ob:'🧤',pv:"They put gloves on my hands at eight years old and told me to hold it in. Every snowflake made in secret felt like guilt. I loved Anna so much it terrified me. So I buried everything in ice.",q:'"Conceal, don\'t feel, don\'t let them see."'},{a:'Act II',ti:"I let it go. And the whole mountain froze.",ob:'🏔️',pv:"The night I ran was the most terrifying and most free I've ever felt. I built a palace from everything they told me to hide. I didn't know I was also building a cage.",q:'"Let it go — that perfect girl is gone."'},{a:'Act III',ti:"She saved me. And I finally understood love.",ob:'💙',pv:"Anna stepped between me and a sword. She froze solid to save me. When she thawed — I understood what I'd done wrong all along. I had been so afraid of hurting her that I never let her love me.",q:'"Love is an open door."'}]}
+  ]},
+  nostalgic:{c:'#8e44ad',bg:'radial-gradient(ellipse at 30% 20%,#1a0830,#06080f)',p:'#be6ee4',label:'Feeling nostalgic',hl:'Stories that take you <em>back</em>',tl:'Some memories are better as feelings than facts.',
+  films:[
+    {e:'🧚',t:'Cinderella',y:'Disney · 1950',r:'About holding onto dreams even when the world grinds them down.',pr:'👗',pn:'Cinderella',ob:'👠',bg:'linear-gradient(135deg,#1a1040,#060408)',lb:'radial-gradient(ellipse at 40% 60%,#0e0828,#030206)',
+    card:{pw:'Extraordinary grace under cruelty — impossible kindness',st:'Resilience, warmth, finding joy in the smallest things',wk:'Waits to be rescued. Accepts injustice too long.',fe:'That the dream was never real. That she deserves the attic.',al:['Jaq & Gus','Fairy Godmother','Prince Charming'],en:['Lady Tremaine','Anastasia & Drizella'],fm:"'Have courage and be kind' reframes Cinderella not as passive victim but as someone with radical moral strength. Kindness, in her hands, is a weapon.",rar:'Classic',q:'"A dream is a wish your heart makes."'},
+    ch:[{a:'Act I',ti:"They gave me a mop. I gave myself a dream.",ob:'🐭',pv:"Every morning I swept and was told I was nothing. Every night I looked at my mother's dress in the attic and remembered who I was before they arrived. I kept small joys like coins in a jar.",q:'"A dream is a wish your heart makes."'},{a:'Act II',ti:"Midnight came. I ran. I left a shoe — maybe on purpose.",ob:'⌛',pv:"I had one night of being seen — of dancing with someone who looked at me like I was the whole room. Then the clock struck. I ran. But I left something behind. Maybe hope is its own kind of glass slipper.",q:'"Even miracles take a little time."'},{a:'Act III',ti:"The shoe fit because it was always mine",ob:'✨',pv:"When they locked me in the attic and broke the glass — I still had the other slipper. That's what they didn't understand: kindness survives. It waits. And eventually someone comes looking for the foot that fits.",q:'"Have courage and be kind."'}]},
+    {e:'🎸',t:'Coco',y:'Disney · Pixar · 2017',r:'About remembering those we loved — and being remembered ourselves.',pr:'🎵',pn:'Mamá Imelda',ob:'🌸',bg:'linear-gradient(135deg,#2a0a00,#060400)',lb:'radial-gradient(ellipse at 40% 60%,#180600,#040100)',
+    card:{pw:'Commanding presence — can stop a room with a look',st:'Fierce protectiveness, ironclad principles, deep family love',wk:'Pride. Holds grief as anger for decades.',fe:'Her family suffering. Being responsible for the wrong choice.',al:['Miguel','Dante','Héctor'],en:['Ernesto de la Cruz','Forgetting'],fm:"Mamá Imelda built an empire alone, raised a family without a man, and leads her lineage from the afterlife. The film's feminist backbone is entirely hers.",rar:'Epic',q:'"I would move heaven and earth for my family."'},
+    ch:[{a:'Act I',ti:"He left for music. I built an empire from shoes.",ob:'👟',pv:"When Héctor walked out that door with his guitar, I had a daughter in my arms and a hole in my chest. So I made shoes. I built a business. I said: we don't need music. I almost believed it.",q:'"I would move heaven and earth for my family."'},{a:'Act II',ti:"In the Land of the Dead, love is the only currency",ob:'🏵️',pv:"I had been angry so long I forgot: anger is just love with nowhere to go. When my great-great-grandson came looking for Héctor, I had to ask the question I feared: did I miss him?",q:'"This family does not talk about Héctor!"'},{a:'Act III',ti:"I put his photo on the ofrenda. That was everything.",ob:'🕯️',pv:"When Héctor started to fade — when no one alive remembered him — I understood the real loss. Not that he left. That he might disappear entirely. So I chose to remember. That was my magic.",q:'"Héctor, we have to get you home."'}]},
+    {e:'🌸',t:'Encanto',y:'Disney · 2021',r:'About carrying everyone\'s hopes — and finally setting them down.',pr:'🦋',pn:'Mirabel',ob:'🕯️',bg:'linear-gradient(135deg,#2a1a4a,#080410)',lb:'radial-gradient(ellipse at 40% 60%,#180a2a,#040208)',
+    card:{pw:'The ability to see what everyone else refuses to look at',st:'Empathy, courage to ask questions no one else will, love without conditions',wk:'Internalised "I am not enough"',fe:"That giftlessness means she doesn't deserve to belong",al:['Luisa','Dolores','Bruno','Casita'],en:["Abuela's fear","The cracks in the walls"],fm:"The hero of a film about how female excellence becomes female trauma — and the healing of it. Mirabel has no gift because she IS the gift.",rar:'Legendary',q:'"The magic is you."'},
+    ch:[{a:'Act I',ti:"No gift. Just me.",ob:'🚪',pv:"The Casita gave everyone something. My door dissolved into wood. Every day since I've been trying to prove that's still enough.",q:'"I am the one who sees the real you."'},{a:'Act II',ti:"I saw what no one else would look at",ob:'✨',pv:"The cracks were real. The candle was failing. I was the only one asking why — because I had nothing to lose by looking.",q:'"What could I do if I knew it didn\'t need to be perfect?"'},{a:'Act III',ti:"The miracle chose the one without gifts",ob:'💛',pv:"They gave me a door with my face on it. Not power. Just me. That was the miracle. That was always the miracle.",q:'"We see how bright you burn."'}]}
+  ]},
+  heartbroken:{c:'#e84393',bg:'radial-gradient(ellipse at 30% 20%,#280515,#06080f)',p:'#f070b3',label:'Feeling heartbroken',hl:'Stories that <em>held their hearts</em> too',tl:"You're allowed to feel this. These stories do.",
+  films:[
+    {e:'🎈',t:'Up',y:'Disney · Pixar · 2009',r:'Ten minutes that said everything about love and loss without a word.',pr:'💛',pn:'Ellie',ob:'📒',bg:'linear-gradient(135deg,#1a2a4a,#040608)',lb:'radial-gradient(ellipse at 40% 60%,#0e1828,#020406)',
+    card:{pw:'Infectious joy — made every ordinary day feel extraordinary',st:'Wonder, hope, boundless warmth',wk:'Never told Carl in words what the adventure book truly meant',fe:'That she lived small. That she wasted her one life.',al:['Carl','Russell (in spirit)'],en:['Time','Illness'],fm:"Ellie is on screen for 10 minutes and is the emotional architecture of the entire film. Proof that female characters need no dialogue to be utterly unforgettable.",rar:'Mythic',q:'"Thanks for the adventure. Now go have a new one."'},
+    ch:[{a:'Act I',ti:"I was the adventure. He just didn't know it yet.",ob:'🏠',pv:"I found him in that old house — quiet, serious Carl — and showed him Paradise Falls in a book. We filled our adventure jar with coins. We planned and planned. Life kept happening instead. I didn't mind.",q:'"Adventure is out there!"'},{a:'Act II',ti:"We grew old together and I never got tired of him",ob:'💛',pv:"We painted the mailbox. We fixed the roof. We sat on the porch when our legs got slower. Every ordinary day was the adventure, Carl. I tried to tell you with everything except words.",q:'"Thanks for the adventure."'},{a:'Act III',ti:"The last page of the book was a love letter",ob:'📖',pv:"On the last page I wrote: Thanks for the adventure — now go have a new one. Because I knew him. I knew he would stop. I knew he needed permission to go on without me. So I gave it.",q:'"Now go have a new one."'}]},
+    {e:'📚',t:'Beauty and the Beast',y:'Disney · 1991',r:'About seeing someone fully — past every wall they built to keep you out.',pr:'📚',pn:'Belle',ob:'🌹',bg:'linear-gradient(135deg,#1a0a2a,#060408)',lb:'radial-gradient(ellipse at 40% 60%,#0e0618,#030206)',
+    card:{pw:'Radical empathy — sees beyond what the world allows itself to see',st:'Intelligence, independence, refuses to be defined by her beauty',wk:'Rescuer complex — drawn to damaged things',fe:'Being trapped in a small life. Never being truly understood.',al:['Lumière','Mrs. Potts','Cogsworth','The Beast'],en:['Gaston','Provincial smallness'],fm:"Belle pre-dates the female gaze as a term but defines it entirely. She is the most-read character in her village and she never stops reading. The library scene is the real love confession.",rar:'Classic',q:'"I want adventure in the great wide somewhere."'},
+    ch:[{a:'Act I',ti:"I wanted more than this provincial life",ob:'📖',pv:"Every morning the same bread, the same square, the same man proposing. I had read a thousand worlds and I knew — I was not made for this smallness. I didn't know the something more was waiting behind a curse.",q:'"I want adventure in the great wide somewhere."'},{a:'Act II',ti:"He had ten thousand books. I understood him then.",ob:'❄️',pv:"He gestured at all of them and said they were mine. He was not kind. He was not easy. But inside the roaring and the shame was someone who had preserved beauty because he couldn't bear to destroy it.",q:'"You should learn to control your temper."'},{a:'Act III',ti:"I saw the man before the curse. That broke it.",ob:'✨',pv:"Love isn't blindness. It's the opposite. Seeing every dark and damaged thing and choosing anyway. I saw what he was trying to become. That was enough. That has always been enough.",q:'"Can anyone be happy if they aren\'t free?"'}]},
+    {e:'🕯️',t:'Encanto',y:'Disney · 2021',r:'About a family held together by cracks only love can see.',pr:'💪',pn:'Luisa',ob:'💪',bg:'linear-gradient(135deg,#2a0a10,#060204)',lb:'radial-gradient(ellipse at 40% 60%,#180608,#040102)',
+    card:{pw:'Super strength — carries everything, always, without asking for help',st:'Reliability, selflessness, total commitment to family',wk:'Cannot ask for help. Equates worth with productivity.',fe:'Not being strong enough. Losing her gift. Becoming a burden.',al:['Mirabel','Dolores','Camilo'],en:["Abuela's expectations","Her inability to rest"],fm:"Luisa's Surface Pressure is the most direct articulation in any Disney film of how women are conditioned to carry everyone's weight and never crack.",rar:'Epic',q:'"Give it to your sister — your sister\'s stronger."'},
+    ch:[{a:'Act I',ti:"I carry everything. That's what I'm for.",ob:'🏋️',pv:"Donkeys, churches, entire boulders. They come to me and I say yes. Always yes. Because yes is my gift. I never thought to ask: what does Luisa want to carry?",q:'"Give it to your sister — your sister\'s stronger."'},{a:'Act II',ti:"When the gift started slipping, I started slipping",ob:'😰',pv:"The weight didn't get lighter as the magic faded. For the first time I understood: I had built my entire self on being useful. What am I if I cannot lift?",q:'"Under the surface I hide my nerves."'},{a:'Act III',ti:"I learned that rest is not defeat",ob:'💛',pv:"When the magic came back because of Mirabel — I cried. Not from relief. From understanding. I was never the foundation. The love was. I had been carrying the wrong thing.",q:'"What could I do if I knew it didn\'t need to be perfect?"'}]}
+  ]},
+  hopeful:{c:'#f0a500',bg:'radial-gradient(ellipse at 30% 20%,#3a2000,#06080a)',p:'#ffd060',label:'Feeling hopeful',hl:'Stories that <em>believe</em> like you do',tl:'Something is coming. These stories felt it too.',
+  films:[
+    {e:'👸🏾',t:'The Princess & the Frog',y:'Disney · 2009',r:'About working for your dream with absolutely everything you have.',pr:'👸🏾',pn:'Tiana',ob:'⭐',bg:'linear-gradient(135deg,#1a3a0a,#040804)',lb:'radial-gradient(ellipse at 40% 60%,#0a2006,#020402)',
+    card:{pw:'World-class culinary magic — food as love, memory, and healing',st:'Work ethic, focus, vision, determination that never quits',wk:'Cannot stop working long enough to let anyone truly in',fe:"That hard work alone won't be enough. That the dream was naive.",al:['Naveen','Louis','Ray','Charlotte'],en:["Dr. Facilier","Her own walls"],fm:"Tiana is the most economically literate Disney princess. She has a business plan. She saves her own money. The film validates female ambition explicitly, without apology.",rar:'Epic',q:'"The only way to get what you want is through hard work."'},
+    ch:[{a:'Act I',ti:"Daddy taught me to wish on stars and work with my hands",ob:'🍽️',pv:"I kept two jars — one for wishing on the evening star, one for every dollar earned. Daddy said you need both. The wish gives direction. The work gets you there.",q:'"The only way to get what you want is through hard work."'},{a:'Act II',ti:"I got my dream and lost what mattered most",ob:'🐸',pv:"For one night I had the restaurant. Then I was a frog. The funny thing about almost getting what you want — you suddenly see all the things you forgot to want.",q:'"I dug a little deeper and came up with you."'},{a:'Act III',ti:"The dream got bigger than the restaurant",ob:'🌟',pv:"I opened my restaurant. But what I'm proudest of is what I almost missed — the real magic isn't in the wishing. It's in choosing to share what you built with someone who sees you fully.",q:'"The evening star is shining bright."'}]},
+    {e:'🌻',t:'Tangled',y:'Disney · 2010',r:'About finally leaving the tower you\'ve been trapped in — and flying.',pr:'🌻',pn:'Rapunzel',ob:'🦎',bg:'linear-gradient(135deg,#2a1a00,#060400)',lb:'radial-gradient(ellipse at 40% 60%,#180e00,#040200)',
+    card:{pw:'70 feet of magic healing hair',st:'Joyful creativity, emotional intelligence, immense inner courage',wk:'Completely trusts the woman who imprisoned her',fe:'Leaving. And being right about it.',al:['Pascal','Flynn Rider','The Snuggly Duckling Gang'],en:['Mother Gothel','Self-doubt'],fm:"Rapunzel's prison is not a dragon — it's a woman who told her the world was dangerous so she would never want to leave. That's a sharper story than any fairy tale.",rar:'Epic',q:'"When will my life begin?"'},
+    ch:[{a:'Act I',ti:"I painted every inch of the tower. Then I wanted the world.",ob:'🎨',pv:"The walls were covered in murals — every dream I couldn't reach. I had a frying pan and a chameleon and seventy feet of magic hair and I had memorised every book she let me have. I was ready. I just needed a door.",q:'"When will my life begin?"'},{a:'Act II',ti:"The floating lights were real. They were always for me.",ob:'✨',pv:"Every year on my birthday they rose — golden, hundreds of them — from a kingdom I didn't know was mine. When I saw them from a boat with a thief who'd become something else, I couldn't speak.",q:'"All those years — they were for me?"'},{a:'Act III',ti:"She was not my mother. I came home anyway.",ob:'👑',pv:"The kingdom lit lanterns for a lost girl. That girl was me. I came home with tangled hair and paint on my fingers and I was exactly who I was always meant to be.",q:'"You were my new dream."'}]}
+  ]},
+  lost:{c:'#2ecc71',bg:'radial-gradient(ellipse at 30% 20%,#052215,#06080f)',p:'#5eeca1',label:'Feeling lost',hl:"Stories for when you've <em>lost the way</em>",tl:'Being lost is just the beginning of finding yourself.',
+  films:[
+    {e:'🌀',t:'Alice in Wonderland',y:'Disney · 1951',r:'Because being lost in a strange world is sometimes how you find yourself.',pr:'🐇',pn:'Alice',ob:'🎩',bg:'linear-gradient(135deg,#1a0a3a,#060408)',lb:'radial-gradient(ellipse at 40% 60%,#0e0620,#030206)',
+    card:{pw:'Insatiable curiosity — can find meaning in absolutely anything',st:'Courage, adaptability, refusal to accept nonsense as reality',wk:'Follows impulse before reason. Constantly gets in her own way.',fe:'That growing up means losing the ability to wonder',al:['The White Rabbit','The Cheshire Cat','The Mad Hatter'],en:['The Queen of Hearts','Conformity'],fm:"Alice is a pre-feminist text that accidentally contains everything: a girl who questions authority, refuses the Queen's logic, and wakes herself up. She is her own rescuer.",rar:'Classic',q:'"Curiouser and curiouser!"'},
+    ch:[{a:'Act I',ti:"I followed a rabbit because I was bored of sense",ob:'⏰',pv:"Everyone else was content with lessons and proper sitting. But when a waistcoated rabbit muttered about being late — I couldn't help it. Curiosity is not a flaw. It's the only honest thing about me.",q:'"Curiouser and curiouser!"'},{a:'Act II',ti:"Nothing made sense. I tried to make it anyway.",ob:'🃏',pv:"The Cat vanished except for his grin. The Queen's roses were painted red. I decided: if this world has no rules, I will be the only consistent thing in it.",q:'"Who are you?"'},{a:'Act III',ti:"I woke up. But Wonderland stayed with me.",ob:'🌸',pv:"They said it was a dream. But I have been to a place where a caterpillar asked the most important question anyone has ever asked me. I carry the answer with me. Especially here.",q:'"It\'s no use going back to yesterday — I was a different person then."'}]},
+    {e:'🧿',t:'Soul',y:'Disney · Pixar · 2020',r:'About forgetting your purpose and finding what actually makes you alive.',pr:'🎷',pn:'22',ob:'🍂',bg:'linear-gradient(135deg,#001a2a,#000608)',lb:'radial-gradient(ellipse at 40% 60%,#001018,#000204)',
+    card:{pw:'Sees what everyone takes for granted — the beauty of ordinary life',st:'Unfiltered honesty, zero pretension, radical presence',wk:'Fear of failing before even trying',fe:'Getting a life and wasting it',al:['Joe Gardner','Jerry','The Zone'],en:["The Counting","Boxes"],fm:"22 is agender and the moral anchor of the film. The story explicitly argues that the value of a life cannot be measured by its achievements.",rar:'Mythic',q:'"You can\'t crush a soul here. That\'s what life on Earth is for."'},
+    ch:[{a:'Act I',ti:"I never found my spark. So I stopped looking.",ob:'✨',pv:"Every soul needs a spark. I tried everything — nothing fit. So I became the soul who mocked the whole idea of wanting anything. It was easier than hoping.",q:'"I don\'t think I\'m good enough."'},{a:'Act II',ti:"Earth was nothing like I imagined. It was better.",ob:'🍕',pv:"I fell into Joe's body and tasted pizza for the first time. I felt October air. I watched a maple key spin down from a tree. Nobody told me ordinary life felt like this.",q:'"I\'m not dying the day I got here!"'},{a:'Act III',ti:"The spark isn't what you do. It's that you're alive.",ob:'🌬️',pv:"Joe thought his spark was jazz. We were both wrong. The spark is this — noticing a leaf. Breathing. Being alive is the spark. That was always the answer.",q:'"You can\'t crush a soul here."'}]},
+  ]},
+  excited:{c:'#f39c12',bg:'radial-gradient(ellipse at 30% 20%,#2a1500,#06080f)',p:'#f8c060',label:'Feeling excited',hl:'Stories that <em>run as fast</em> as you',tl:'The world is about to change. These stories already know.',
+  films:[
+    {e:'🧜‍♀️',t:'The Little Mermaid',y:'Disney · 1989',r:'About wanting so badly to belong somewhere you can almost taste it.',pr:'🧜‍♀️',pn:'Ariel',ob:'🐚',bg:'linear-gradient(135deg,#001a30,#000608)',lb:'radial-gradient(ellipse at 40% 60%,#001020,#000204)',
+    card:{pw:'Voice of extraordinary beauty — can move hearts without words',st:'Passion, curiosity, willingness to risk everything for what she loves',wk:'Impulsiveness. Trades her most powerful gift for a chance.',fe:'Never escaping the world under the sea. Being ordinary.',al:['Flounder','Sebastian','Scuttle'],en:["Ursula","King Triton's rules"],fm:"Ariel gave up her voice for legs, for a world she chose. The feminist reading isn't that she gave it up for a man — it's that she wanted an entire different life and she paid for it.",rar:'Classic',q:'"I want to be where the people are."'},
+    ch:[{a:'Act I',ti:"I collected the world they told me to fear",ob:'🦀',pv:"Twenty thousand gadgets and gizmos. Every sunken ship was a museum and I was its curator. They said humans were dangerous. I thought: anything that makes forks to eat with must be wonderful.",q:'"I\'ve got gadgets and gizmos aplenty."'},{a:'Act II',ti:"I gave up my voice for a chance to be seen",ob:'🔱',pv:"I know how it sounds. But you have never watched the world above from the bottom, heard their music through the waves. I would have given anything to be where the people are.",q:'"Part of your world."'},{a:'Act III',ti:"I got legs and an even bigger voice",ob:'🌅',pv:"I stood on the shore with impossible new feet and the whole world was in front of me. Every step a discovery. Every breath tasted of somewhere new.",q:'"I love you, Daddy."'}]},
+    {e:'🌻',t:'Tangled',y:'Disney · 2010',r:'About finally leaving the tower you\'ve been trapped in — and flying.',pr:'🌻',pn:'Rapunzel',ob:'🦎',bg:'linear-gradient(135deg,#2a1a00,#060400)',lb:'radial-gradient(ellipse at 40% 60%,#180e00,#040200)',
+    card:{pw:'70 feet of magic healing hair',st:'Joyful creativity, immense inner courage',wk:'Completely trusts the woman who imprisoned her',fe:'Leaving. And being right about it.',al:['Pascal','Flynn Rider'],en:['Mother Gothel'],fm:"Rapunzel's prison is not a dragon. It's a woman who made her afraid of the world. That's the sharpest story in any fairy tale.",rar:'Epic',q:'"When will my life begin?"'},
+    ch:[{a:'Act I',ti:"I painted the walls and dreamed of more",ob:'🎨',pv:"The tower walls were covered in every dream I couldn't reach. I had a frying pan and a chameleon and more hair than sense. I was ready for everything. I just needed a door.",q:'"When will my life begin?"'},{a:'Act II',ti:"The lights were real. I always knew.",ob:'✨',pv:"Every birthday, golden lights rose from a kingdom I didn't know was mine. When I saw them from a boat with someone who'd become something unexpected — I couldn't find a single word.",q:'"All those years — they were for me?"'},{a:'Act III',ti:"I came home exactly as I was",ob:'👑',pv:"She was not my mother. The kingdom was mine. I came home with tangled hair and paint on my fingers and I was exactly who I was always meant to be.",q:'"You were my new dream."'}]},
+    {e:'💎',t:'Aladdin',y:'Disney · 1992',r:'About seizing the magic when it finally shows up at your door.',pr:'💎',pn:'Jasmine',ob:'🦁',bg:'linear-gradient(135deg,#1a1a00,#060600)',lb:'radial-gradient(ellipse at 40% 60%,#100e00,#030300)',
+    card:{pw:'Political authority — can command rooms and change laws',st:'Intelligence, fierceness, refuses to be bargained with',wk:'Naïvety about the world outside the palace walls',fe:'Being married off. Never choosing her own story.',al:['Rajah','Aladdin','The Genie'],en:['Jafar','The law that removes her agency'],fm:"Jasmine rewrites her own ending: she doesn't just get a husband, she changes the law. The 2019 remake makes this explicit — she becomes sultan.",rar:'Classic',q:'"I am not a prize to be won."'},
+    ch:[{a:'Act I',ti:"A cage is still a cage — even a golden one",ob:'🕊️',pv:"I had everything: silks, peacocks, marble. And I had never chosen a single day of my life. They would marry me to a prince and call it fate. I called it a smaller cage than the one I was already in.",q:'"I am not a prize to be won."'},{a:'Act II',ti:"He showed me the world from a magic carpet",ob:'🌙',pv:"We flew over the rooftops and I forgot, for one night, that I was a princess. Just a girl next to a boy who looked at me like I was already free. I hadn't felt that way since I was small.",q:'"Do you trust me?"'},{a:'Act III',ti:"I chose my own story. No genie required.",ob:'⭐',pv:"In the end I didn't need a wish granted. I needed the law to change. So I changed it. Because I am the daughter of a sultan — and someday I will be sultan myself. Watch.",q:'"I choose you, Aladdin."'}]}
+  ]},
+  adventurous:{c:'#1abc9c',bg:'radial-gradient(ellipse at 30% 20%,#041a14,#06080f)',p:'#4adcc4',label:'Feeling adventurous',hl:'Stories as <em>wild</em> as the sea',tl:"The horizon isn't a limit. It's an invitation.",
+  films:[
+    {e:'🗺️',t:'Treasure Planet',y:'Disney · 2002',r:'The underrated masterpiece — space, treasure, and learning to trust.',pr:'🚀',pn:'Jim Hawkins',ob:'🌌',bg:'linear-gradient(135deg,#0a1a3a,#020408)',lb:'radial-gradient(ellipse at 40% 60%,#060e20,#020306)',
+    card:{pw:'Solar surfer mastery — born for the infinite cosmos',st:'Brilliance, courage, loyalty once earned',wk:'Abandonment wounds make him push everyone away',fe:'Being exactly what everyone expects: a lost cause',al:['John Silver','Captain Amelia','Morph'],en:['Scroop','His own self-destruction'],fm:"Jim's story — how trauma produces self-destruction and how one good relationship can rewrite that — transcends gender entirely. The most emotionally honest Disney film.",rar:'Epic',q:'"Now I\'m on my way to the greatest adventure of my life."'},
+    ch:[{a:'Act I',ti:"They called me a lost cause. I called that a dare.",ob:'⚡',pv:"Every report card: great potential but refuses to apply himself. They meant it as criticism. I took it as proof that I had something left worth finding.",q:'"This is the best map I\'ve ever seen."'},{a:'Act II',ti:"John Silver was the father and the villain at once",ob:'🔭',pv:"He taught me rigging and stars and how to read the solar wind. He called me Jimbo. And he was planning to betray us the whole time. I don't know if I've ever felt two things so enormous so close together.",q:'"You got the makings of greatness in you."'},{a:'Act III',ti:"I blew up the treasure to save the crew",ob:'💥',pv:"All that gold. The entire reason I came. When I had to choose between treasure and people — there was no choice. The adventure was never the map. It was who I became following it.",q:'"Now I\'m on my way to the greatest adventure of my life."'}]},
+    {e:'🌊',t:'Moana',y:'Disney · 2016',r:'When the call of the ocean becomes impossible to ignore.',pr:'🌺',pn:'Moana',ob:'🐚',bg:'linear-gradient(135deg,#001a2a,#000608)',lb:'radial-gradient(ellipse at 40% 60%,#001018,#000204)',
+    card:{pw:'The ocean responds to her',st:'Courage, navigation, deep love for her people',wk:'Needs permission before trusting herself fully',fe:'Letting her people down',al:['Maui','Her Grandmother','Te Fiti'],en:["Te Kā",'Self-doubt'],fm:"Moana doesn't need a love interest. She needs the sea. The ocean is both her freedom and her purpose.",rar:'Legendary',q:'"I am Moana of Motunui."'},
+    ch:[{a:'Act I',ti:"We sailed through storms and coconut pirates",ob:'🌊',pv:"I capsized. We outran kakamoras. We descended into the realm of monsters to steal back a giant hook from a crab. And through it all, I kept steering toward the horizon.",q:'"The ocean chose you for a reason."'},{a:'Act II',ti:"Maui and I fought like family",ob:'⚓',pv:"He called me Curly. I called him impossible. We were both right. Somewhere in the fighting we became something else — two people who needed each other and refused to admit it.",q:'"You\'re so vain. I\'m in the water."'},{a:'Act III',ti:"I restored the heart of Te Fiti",ob:'💚',pv:"I walked into fire. I gave back the heart. She remembered herself. The ocean calmed. And I finally understood why it had been calling me all along — I was always meant to be the one.",q:'"I am Moana of Motunui."'}]},
+    {e:'🐰',t:'Zootopia',y:'Disney · 2016',r:'About building the world you want to live in — from scratch.',pr:'🐰',pn:'Judy Hopps',ob:'🚔',bg:'linear-gradient(135deg,#1a0a2a,#060408)',lb:'radial-gradient(ellipse at 40% 60%,#0e0618,#030206)',
+    card:{pw:'Fastest cop in Zootopia — never gives up on a case',st:'Optimism, tenacity, moral clarity, relentless drive',wk:'Unconscious bias — hurts Nick before she understands her own prejudice',fe:'Failing. Being sent back to Bunnyburrow. Staying small.',al:['Nick Wilde','Chief Bogo (eventually)','Clawhauser'],en:['Dawn Bellwether','Her own assumptions'],fm:"Judy breaks every ceiling. The twist is she almost becomes the villain's tool by not examining her own bias — her arc is about accountability, not just ambition.",rar:'Epic',q:'"In Zootopia, anyone can be anything."'},
+    ch:[{a:'Act I',ti:"Everyone said rabbits don't become cops. I said watch.",ob:'🥕',pv:"Bunnyburrow was beautiful and small and full of people who loved me and needed me to stay small with them. I packed one bag and stepped onto the biggest platform I had ever seen. I did not cry.",q:'"I\'ve always wanted to be a police officer."'},{a:'Act II',ti:"I broke trust with someone I was starting to love",ob:'🦊',pv:"I used Nick's words against him in a press conference. I didn't mean it as a weapon. But I should have known — words about who someone is always cut deepest. He left. I went home. I had to learn the difference between being right and being good.",q:'"I\'m just a dumb bunny, but we are good at multiplying."'},{a:'Act III',ti:"We solved it together. That was always the only way.",ob:'🌆',pv:"Nick and I. A fox and a rabbit. The city wanted us to be enemies. But we were better together than the city deserved. We just had to be what we promised first.",q:'"In Zootopia, anyone can be anything."'}]}
+  ]}
+};
+
+// MAP PINS
+const pins=[
+  {x:'43%',y:'28%',c:'#80d0ff',l:'Norway & Scandinavia',r:'Northern Europe',f:'❄️ Frozen · ❄️ Frozen II'},
+  {x:'38%',y:'22%',c:'#c580ff',l:'Scotland — The Highlands',r:'British Isles',f:'🏹 Brave'},
+  {x:'44%',y:'31%',c:'#f070b3',l:'France',r:'Western Europe',f:'📚 Beauty and the Beast · 🐈 The Aristocats'},
+  {x:'40%',y:'20%',c:'#a0c8ff',l:'Denmark',r:'Northern Europe',f:'🧜‍♀️ The Little Mermaid'},
+  {x:'35%',y:'38%',c:'#ffa060',l:'Spain & Mediterranean',r:'Southern Europe',f:'⚡ Hercules (Ancient Greece)'},
+  {x:'30%',y:'38%',c:'#6edfb0',l:'Louisiana, USA',r:'Southern United States',f:'⭐ The Princess & the Frog'},
+  {x:'24%',y:'28%',c:'#60b0ff',l:'New York & USA',r:'North America',f:'🐰 Zootopia · ⚡ The Incredibles'},
+  {x:'19%',y:'52%',c:'#ffd060',l:'Colombia & S. America',r:'South America',f:'🦋 Encanto'},
+  {x:'56%',y:'36%',c:'#f8a040',l:'Arabia',r:'Middle East',f:'💎 Aladdin'},
+  {x:'65%',y:'22%',c:'#ff6060',l:'Ancient China',r:'East Asia',f:'🪷 Mulan'},
+  {x:'70%',y:'20%',c:'#ff9060',l:'Japan',r:'East Asia',f:'🌸 Japanese inspiration'},
+  {x:'60%',y:'36%',c:'#60e0a0',l:'India',r:'South Asia',f:'🐯 The Jungle Book'},
+  {x:'24%',y:'63%',c:'#4adcc4',l:'Polynesia — Pacific',r:'South Pacific',f:'🌊 Moana'},
+  {x:'26%',y:'55%',c:'#ff8888',l:'Hawaii',r:'Pacific Islands',f:'🌺 Lilo & Stitch'},
+  {x:'38%',y:'68%',c:'#c0a060',l:'Sub-Saharan Africa',r:'Africa',f:'🦁 The Lion King'},
+  {x:'77%',y:'65%',c:'#d4a040',l:'Australia',r:'Oceania',f:'🦘 Various nature films'},
+  {x:'23%',y:'42%',c:'#ffd060',l:'Caribbean Islands',r:'Caribbean',f:'🌺 Lilo & Stitch (inspiration)'},
+  {x:'14%',y:'58%',c:'#40c0ff',l:'Outer Space / Sci-Fi',r:'Imagined Worlds',f:'🚀 Treasure Planet · 🤖 WALL·E'},
+];
+
+// SELECT MOOD
+function selectMood(el){
+  const mood=el.dataset.mood;curMood=mood;
+  const d=M[mood];
+  const rect=el.getBoundingClientRect();
+  const b=document.getElementById('burst');
+  b.style.left=(rect.left+rect.width/2)+'px';b.style.top=(rect.top+rect.height/2)+'px';
+  b.style.width='100px';b.style.height='100px';b.style.background=d.c;
+  setTimeout(()=>b.classList.add('go'),10);
+  setTimeout(()=>{buildS2(mood,d);goTo(2);setTimeout(()=>{b.classList.remove('go');b.style.transform='translate(-50%,-50%) scale(0)'},300)},500);
+}
+
+function buildS2(mood,d){
+  document.getElementById('s2bg').style.background=d.bg;
+  document.getElementById('s2Label').textContent=d.label;
+  document.getElementById('s2Hl').innerHTML=d.hl;
+  document.getElementById('s2Tl').textContent=d.tl;
+  const pc=document.getElementById('particles');pc.innerHTML='';
+  for(let i=0;i<24;i++){const p=document.createElement('div');p.className='particle';const sz=Math.random()*6+2;p.style.cssText=`width:${sz}px;height:${sz}px;background:${d.p};left:${Math.random()*100}%;animation-duration:${Math.random()*8+6}s;animation-delay:${Math.random()*6}s;`;pc.appendChild(p)}
+  const pe=document.getElementById('portals');pe.innerHTML='';
+  d.films.forEach(f=>{
+    const el=document.createElement('div');el.className='portal';
+    el.innerHTML=`<div class="portal-bg" style="background:${f.bg}"></div><div class="portal-g"></div><div class="portal-p">${f.pr}</div><div class="portal-o">${f.ob}</div><div class="portal-body"><div class="portal-r">For you because</div><div class="portal-t">${f.t}</div><div class="portal-n">Walt Disney · ${f.pn}</div><div class="portal-cta">Enter her story →</div></div>`;
+    el.onclick=()=>openFilm(f,d);pe.appendChild(el);
+  });
+}
+
+function openFilm(f,md){
+  curFilm=f;
+  document.getElementById('s3lbg').style.background=f.lb;
+  document.getElementById('s3pe').textContent=f.pr;
+  document.getElementById('s3orb').textContent=f.ob;
+  document.getElementById('s3pn').textContent=f.pn;
+  document.getElementById('s3fn').textContent=f.t;
+  document.getElementById('s3tt').textContent=f.t;
+  document.getElementById('s3rs').textContent=f.r;
+  document.getElementById('s3mt').textContent=f.t;
+  document.getElementById('s3yr').textContent=f.y;
+  const cc=document.getElementById('chCont');cc.innerHTML='';
+  f.ch.forEach((ch,i)=>{
+    const div=document.createElement('div');div.className='chapter'+(i===0?' open':'');
+    div.innerHTML=`<div class="ch-h" onclick="this.parentElement.classList.toggle('open')"><div class="ch-n">0${i+1}</div><div class="ch-m"><div class="ch-a">${ch.a}</div><div class="ch-ti">${ch.ti}</div></div><div class="ch-ob">${ch.ob}</div><div class="ch-ar">▶</div></div><div class="ch-bd"><div class="ch-in"><p class="ch-pv">${ch.pv}</p><div class="ch-q">${ch.q}</div></div></div>`;
+    cc.appendChild(div);
+  });
+  document.getElementById('s3r').scrollTop=0;goTo(3);
+}
+
+function openCard(){
+  if(!curFilm)return;
+  const f=curFilm,c=f.card;
+  document.getElementById('cardFront').innerHTML=`
+    <div class="cf-sh"></div>
+    <div class="cf-hd"><div class="cf-type">Disney Memoria ✦ Princess Card</div><div class="cf-gem">✨</div></div>
+    <div class="cf-art"><div class="cf-art-bg" style="background:${f.lb}"></div><div class="cf-princess">${f.pr}</div><div class="cf-obj">${f.ob}</div></div>
+    <div class="cf-div"></div>
+    <div class="cf-nr"><div class="cf-name">${f.pn}</div><div class="cf-film">${f.t}</div></div>
+    <div class="cf-stats">
+      <div class="cf-stat gold full"><div class="cf-stat-l">✦ Signature Power</div><div class="cf-stat-v">${c.pw}</div></div>
+      <div class="cf-stat green"><div class="cf-stat-l">▲ Strength</div><div class="cf-stat-v">${c.st}</div></div>
+      <div class="cf-stat red"><div class="cf-stat-l">▼ Weakness</div><div class="cf-stat-v">${c.wk}</div></div>
+      <div class="cf-stat purple full"><div class="cf-stat-l">◈ Greatest Fear</div><div class="cf-stat-v">${c.fe}</div></div>
+    </div>
+    <div class="cf-ft"><div class="cf-rar">${c.rar}</div><div class="cf-hint">hover to flip →</div></div>`;
+  document.getElementById('cardBack').innerHTML=`
+    <div class="cb-lbl">The Feminist Reread</div>
+    <div class="cb-title">${f.pn} — ${f.t}</div>
+    <p class="cb-fem">${c.fm}</p>
+    <div class="cb-al-l">Allies</div>
+    <div class="cb-tags">${c.al.map(a=>`<span class="ally-tag">${a}</span>`).join('')}</div>
+    <div class="cb-al-l">Enemies</div>
+    <div class="cb-tags">${c.en.map(e=>`<span class="enemy-tag">${e}</span>`).join('')}</div>
+    <div class="cb-quote">${c.q}</div>`;
+  goTo(4);
+}
+
+function addJar(){if(curFilm&&!jar.find(m=>m.t===curFilm.t))jar.push(curFilm)}
+
+function buildJar(){
+  const jw=document.getElementById('jarWrap');
+  jw.querySelectorAll('.firefly').forEach(f=>f.remove());
+  const cols=['#ffd060','#f070b3','#6a8fc5','#5eeca1','#be6ee4','#e05a4a','#f8c060','#4adcc4'];
+  for(let i=0;i<Math.max(jar.length,5);i++){const ff=document.createElement('div');ff.className='firefly';const sz=Math.random()*8+3;ff.style.cssText=`width:${sz}px;height:${sz}px;background:${cols[i%cols.length]};left:${28+Math.random()*44}%;top:${28+Math.random()*48}%;animation-duration:${Math.random()*3+2}s;animation-delay:${Math.random()*2}s;box-shadow:0 0 ${sz*2}px ${cols[i%cols.length]}88;`;jw.appendChild(ff)}
+  const pills=document.getElementById('s6Pills');pills.innerHTML='';
+  if(jar.length===0)pills.innerHTML='<div style="font-size:11.5px;color:rgba(255,255,255,.18);letter-spacing:1px">Your jar is empty — explore some worlds first</div>';
+  else jar.forEach(m=>{const p=document.createElement('div');p.className='s6-pill';p.innerHTML=`${m.pr} ${m.t}`;pills.appendChild(p)});
+}
+
+function buildMap(){
+  const outer=document.querySelector('.map-scroll-outer');
+  const scrollB=document.getElementById('scrollBody');
+  const pre=document.getElementById('mapPreloader');
+  const fill=document.getElementById('mapFill');
+
+  // Reset: remove unrolling class and reset scroll position
+  if(outer){outer.classList.remove('unrolling');void outer.offsetWidth}
+  if(scrollB){scrollB.scrollTop=0}
+
+  if(pre){
+    pre.classList.remove('hidden');
+    fill.style.width='0';
+    let pct=0;
+    const iv=setInterval(()=>{
+      pct+=Math.random()*14+5;
+      if(pct>=100){
+        pct=100;clearInterval(iv);
+        fill.style.width='100%';
+        setTimeout(()=>{
+          pre.classList.add('hidden');
+          // Trigger the vertical unroll sequence
+          if(outer){outer.classList.add('unrolling')}
+          // Build pins after body has started opening
+          setTimeout(()=>doMapPins(),800);
+        },350);
+      }
+      fill.style.width=Math.min(pct,100)+'%';
+    },80);
+  } else {
+    if(outer)outer.classList.add('unrolling');
+    setTimeout(()=>doMapPins(),800);
+  }
+}
+
+function doMapPins(){
+  const layer=document.getElementById('mapPins');
+  if(!layer)return;
+  layer.innerHTML='';
+  // Pin colors adapted to parchment: warm, earthy
+  const paperPins=pins.map(p=>({...p,pc:p.c}));
+  paperPins.forEach(pin=>{
+    const el=document.createElement('div');el.className='mp';
+    el.style.cssText=`left:${pin.x};top:${pin.y}`;
+    // Darker earthy dot color for parchment
+    const dotColor='rgba(80,40,10,0.7)';
+    const dotBg='rgba(160,100,30,0.25)';
+    el.innerHTML=`
+      <div class="mp-dot" style="background:${dotBg};border-color:rgba(100,55,15,0.7);color:rgba(100,55,15,0.8)">✦</div>
+      <div class="mp-pop">
+        <div class="mp-pop-t">${pin.l}</div>
+        <div class="mp-pop-r" style="color:rgba(120,70,20,0.8)">${pin.r}</div>
+        <div class="mp-pop-f">${pin.f}</div>
+      </div>`;
+    layer.appendChild(el);
+  });
+  // Build legend
+  const leg=document.getElementById('mapLegend');
+  if(!leg)return;
+  leg.innerHTML='';
+  const regions=[
+    {e:'❄️',t:'Frozen Kingdoms — Norway'},
+    {e:'🏹',t:'Highland Realms — Scotland'},
+    {e:'🪷',t:'Ancient Dynasties — China'},
+    {e:'🌊',t:'Polynesian Seas — Pacific'},
+    {e:'💎',t:'Desert Sultanates — Arabia'},
+    {e:'⭐',t:'Southern Bayous — Louisiana'},
+    {e:'🌺',t:'Island Ohana — Hawaii'},
+    {e:'🦋',t:'Mountain Villages — Colombia'},
+  ];
+  regions.forEach(r=>{
+    const d=document.createElement('div');d.className='legend-item';
+    d.innerHTML=`<span>${r.e}</span><span>${r.t}</span>`;
+    leg.appendChild(d);
+  });
+}
+
+// VOICE
+let speaking=false,utter=null;
+function getPageText(){
+  if(curScreen===0)return"Some things never change, and I'm holding on tight to you. You grew up fast. The world asked you to. But these stories were waiting — patient as magic, warm as castle lights. They still know your name. Enter the magic.";
+  if(curScreen===1)return"How are you feeling tonight? Choose a feeling and find your story. Are you feeling lonely, hopeful, brave, nostalgic, lost, heartbroken, excited, or adventurous?";
+  if(curScreen===2&&curMood){const d=M[curMood];return`${d.label}. ${d.tl} Three stories are waiting for you: ${d.films.map(f=>`${f.t}, told by ${f.pn}. ${f.r}`).join('. Or ')}`;}
+  if(curScreen===3&&curFilm){const f=curFilm;return`${f.t}. ${f.r} ${f.ch.map(c=>`${c.a}: ${c.ti}. ${c.pv}`).join(' ')}` ;}
+  if(curScreen===4&&curFilm){const c=curFilm.card;return`Princess Card for ${curFilm.pn} from ${curFilm.t}. Signature power: ${c.pw}. Strength: ${c.st}. Weakness: ${c.wk}. Greatest fear: ${c.fe}. The feminist reread: ${c.fm}`;}
+  if(curScreen===5)return"The Disney World Map. Hover over any glowing point to discover which Disney stories are set in that region. From Norway for Frozen, to Polynesia for Moana, China for Mulan, Arabia for Aladdin, Scotland for Brave, and many more.";
+  if(curScreen===6)return`Your memory jar. You have saved ${jar.length} stories. ${jar.map(m=>m.t).join(', ')}.`;
+  return"Disney Memoria. Where feelings find stories.";
+}
+function toggleVoice(){
+  const btn=document.getElementById('voiceBtn');
+  if(speaking){speechSynthesis.cancel();speaking=false;btn.classList.remove('speaking');btn.textContent='🎙️';return;}
+  const text=getPageText();
+  utter=new SpeechSynthesisUtterance(text);
+  utter.rate=0.82;utter.pitch=1.06;utter.volume=1;
+  const voices=speechSynthesis.getVoices();
+  const preferred=['Samantha','Karen','Moira','Tessa','Victoria','Fiona','Allison','Ava','Susan'];
+  for(const name of preferred){const v=voices.find(v=>v.name.includes(name));if(v){utter.voice=v;break;}}
+  utter.onend=()=>{speaking=false;btn.classList.remove('speaking');btn.textContent='🎙️'};
+  utter.onerror=()=>{speaking=false;btn.classList.remove('speaking');btn.textContent='🎙️'};
+  speechSynthesis.speak(utter);speaking=true;btn.classList.add('speaking');btn.textContent='🔊';
+}
+window.speechSynthesis&&speechSynthesis.getVoices();
+window.speechSynthesis&&(speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices());
+
+goTo(0);
+</script>
+</body>
+</html>
