@@ -1,264 +1,307 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disney: The Enchanted Memoria</title>
-    <style>
-        :root {
-            --gold: #ffd700;
-            --glass: rgba(255, 255, 255, 0.1);
-            --border: rgba(255, 255, 255, 0.2);
-            --bg: #0f0f1a;
-        }
-
-        body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            background: var(--bg);
-            color: white;
-            font-family: 'Segoe UI', sans-serif;
-            overflow: hidden;
-            transition: background 1.5s ease;
-            cursor: none;
-        }
-
-        /* --- 1. THE ATMOSPHERE --- */
-        #star-canvas {
-            position: fixed; inset: 0; z-index: 0; pointer-events: none;
-        }
-
-        .cursor {
-            width: 10px; height: 10px; background: var(--gold);
-            border-radius: 50%; position: fixed; z-index: 10000;
-            pointer-events: none; box-shadow: 0 0 15px var(--gold);
-        }
-
-        /* --- 2. QUEST & MEMORY UI --- */
-        #quest-tracker {
-            position: fixed; top: 20px; left: 20px; z-index: 100;
-            background: var(--glass); padding: 15px; border-radius: 15px;
-            border: 1px solid var(--gold); backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        #memory-jar {
-            margin-top: 10px; display: flex; gap: 5px; flex-wrap: wrap;
-        }
-
-        .memory-pill {
-            background: var(--gold); color: black; padding: 2px 8px;
-            border-radius: 10px; font-size: 10px; font-weight: bold;
-        }
-
-        /* --- 3. SPATIAL PORTAL --- */
-        .portal-view {
-            display: flex; justify-content: center; align-items: center;
-            gap: 30px; height: 100vh; perspective: 1000px;
-        }
-
-        .realm-card {
-            width: 200px; height: 320px;
-            background: var(--glass); border: 1px solid var(--border);
-            border-radius: 20px; backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            display: flex; flex-direction: column; justify-content: center;
-            align-items: center; transition: all 0.5s ease;
-        }
-
-        .realm-card:hover {
-            transform: translateY(-20px) scale(1.05);
-            border-color: var(--gold); box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
-        }
-
-        .realm-icon { font-size: 60px; margin-bottom: 20px; }
-
-        /* --- 4. STORY OVERLAY --- */
-        #story-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
-            z-index: 500; display: none; flex-direction: column;
-            justify-content: center; align-items: center;
-            backdrop-filter: blur(20px);
-        }
-
-        .princess-card {
-            width: 300px; padding: 30px; background: white; color: black;
-            border-radius: 20px; text-align: center; position: relative;
-        }
-
-        .re-read-tag {
-            background: #ff4757; color: white; padding: 5px 10px;
-            border-radius: 5px; font-size: 12px; font-weight: bold;
-            position: absolute; top: -10px; right: 20px;
-        }
-
-        /* --- 5. THE CHRONICLER --- */
-        #chronicler {
-            position: fixed; bottom: 30px; right: 30px; z-index: 1000;
-            text-align: center;
-        }
-
-        .speech {
-            background: white; color: black; padding: 10px 15px;
-            border-radius: 12px; font-size: 14px; font-weight: 600;
-            margin-bottom: 10px; opacity: 0; transition: 0.4s;
-        }
-
-        .avatar { font-size: 70px; animation: float 3s infinite ease-in-out; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disney Memoria ✦ Something Never Changes</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div class="cursor" id="cursor"></div>
-<canvas id="star-canvas"></canvas>
+<div class="cursor-ring" id="cursorRing"></div>
+<canvas id="starCanvas"></canvas>
+<div class="burst" id="burst"></div>
+<div class="voice-btn" id="voiceBtn" onclick="toggleVoice()">🎙️</div>
 
-<div id="quest-tracker">
-    <div style="font-size: 10px; color: var(--gold); letter-spacing: 1px;">QUEST PROGRESS</div>
-    <div id="stars">🌑 🌑 🌑 🌑</div>
-    <div id="memory-jar"></div>
+<!-- screen 0 opening page -->
+<div class="screen active" id="screen0">
+  <div class="castle-wrap">
+    <div class="rays" id="raysEl"></div>
+    <span class="castle">🏰</span>
+  </div>
+  <div class="il l1">Disney Memoria Presents</div>
+  <h1 class="il l2">Some things <em>never</em> change —<br>and I'm holding on tight to you.</h1>
+  <p class="il l3">A love letter to the child you still are</p>
+  <p class="intro-sub">You grew up fast. The world asked you to.<br>But somewhere between <strong>who you were</strong> and who you became,<br>these stories were waiting — <em>patient as magic, warm as castle lights.</em><br>They still know your name.</p>
+  <div class="intro-enter" onclick="goTo(1)"><span class="sparkle">✦</span> Enter the magic <span class="sparkle">✦</span></div>
 </div>
 
-<div class="portal-view" id="main-portal">
-    <div class="realm-card" onmouseover="shiftMood('ocean')" onclick="openStory('Ocean')">
-        <div class="realm-icon">🌊</div>
-        <div class="label">The Abyss</div>
+<!-- screen 1 mood picker -->
+<div class="screen" id="screen1">
+  <div class="s1-logo">✦ Disney Memoria ✦</div>
+  <h1 class="s1-title">How are you feeling<br><em>tonight?</em></h1>
+  <p class="s1-sub">Choose a feeling — find your story</p>
+  <div class="orbs-wrap">
+    <div class="orb o-lonely"      data-mood="lonely"      onclick="selectMood(this)"><div class="orb-e">🌊</div><div class="orb-l">Lonely</div></div>
+    <div class="orb o-hopeful"     data-mood="hopeful"     onclick="selectMood(this)"><div class="orb-e">🌅</div><div class="orb-l">Hopeful</div></div>
+    <div class="orb o-brave"       data-mood="brave"       onclick="selectMood(this)"><div class="orb-e">🔥</div><div class="orb-l">Brave</div></div>
+    <div class="orb o-nostalgic"   data-mood="nostalgic"   onclick="selectMood(this)"><div class="orb-e">🌙</div><div class="orb-l">Nostalgic</div></div>
+    <div class="orb o-excited"     data-mood="excited"     onclick="selectMood(this)"><div class="orb-e">⚡</div><div class="orb-l">Excited</div></div>
+    <div class="orb o-adventurous" data-mood="adventurous" onclick="selectMood(this)"><div class="orb-e">🧭</div><div class="orb-l">Adventurous</div></div>
+  </div>
+  <div class="nav-row">
+    <div class="nav-chip" onclick="goTo(5)">🗺 World Map</div>
+    <div class="nav-chip" onclick="goTo(6)">🫙 Memory Jar</div>
+  </div>
+  <!-- digital presence section -->
+  <div class="s1-digital">
+    <div class="s1-digital-label">Current Digital Presence</div>
+    <div class="s1-digital-row">
+      <div class="s1-digital-card">
+        <div class="s1-digital-icon">🏰</div>
+        <div class="s1-digital-info">
+          <div class="s1-digital-name">Disney Corporate</div>
+          <div class="s1-digital-desc">The official home of Walt Disney Company — news, stories & legacy</div>
+        </div>
+      </div>
+      <div class="s1-digital-card">
+        <div class="s1-digital-icon">▶️</div>
+        <div class="s1-digital-info">
+          <div class="s1-digital-name">Disney+ Streaming</div>
+          <div class="s1-digital-desc">Your portal to every film, series & original — watch anywhere</div>
+        </div>
+      </div>
+      <div class="s1-digital-card">
+        <div class="s1-digital-icon">🎢</div>
+        <div class="s1-digital-info">
+          <div class="s1-digital-name">Parks & Experiences</div>
+          <div class="s1-digital-desc">Plan your visit to the most magical places on Earth</div>
+        </div>
+      </div>
     </div>
-    <div class="realm-card" onmouseover="shiftMood('fantasy')" onclick="openStory('Fantasy')">
-        <div class="realm-icon">🏰</div>
-        <div class="label">Enchanted</div>
-    </div>
-    <div class="realm-card" onmouseover="shiftMood('future')" onclick="openStory('Future')">
-        <div class="realm-icon">🤖</div>
-        <div class="label">Tomorrow</div>
-    </div>
+  </div>
 </div>
 
-<div id="story-overlay">
-    <div class="princess-card">
-        <div class="re-read-tag">Feminist Re-read</div>
-        <h2 id="story-title">Princess Title</h2>
-        <p id="story-text">Loading narrative...</p>
-        <button onclick="closeStory()" style="padding: 10px 20px; cursor: pointer;">Return to Galaxy</button>
+<!-- screen 2 mood world (films) -->
+<div class="screen" id="screen2">
+  <div class="s2-bg" id="s2bg"></div>
+  <div class="particles" id="particles"></div>
+  <div class="s2-back" onclick="goTo(1)">← back</div>
+  <div class="s2-content">
+    <div class="s2-label" id="s2Label"></div>
+    <h2 class="s2-hl" id="s2Hl"></h2>
+    <p class="s2-tl" id="s2Tl"></p>
+    <div class="portals" id="portals"></div>
+    <!-- castle background image -->
+    <div class="s2-castle-bg">
+      <div class="s2-castle-bg-img"></div>
+      <div class="s2-castle-bg-overlay"></div>
+      <div class="s2-castle-bg-text">
+        <div class="s2-castle-eyebrow">Walt Disney</div>
+        <div class="s2-castle-title">Where every story<br><em>begins</em></div>
+        <div class="s2-castle-sub">100 years of magic. Still waiting for you.</div>
+      </div>
     </div>
+    <div class="s2-btns">
+      <div class="s2-btn" onclick="goTo(5)">🗺 World Map</div>
+      <div class="s2-btn" onclick="goTo(6)">🫙 Memory Jar</div>
+    </div>
+  </div>
 </div>
 
-<div id="chronicler">
-    <div class="speech" id="speech">Welcome, Explorer!</div>
-    <div class="avatar" id="avatar">🧙‍♂️</div>
+<!-- screen 3 story view -->
+<div class="screen" id="screen3">
+  <div class="s3l" id="s3l">
+    <div class="s3l-bg" id="s3lbg"></div>
+    <div class="s3l-ov"></div>
+    <div class="s3-pw">
+      <div style="position:relative;display:inline-block">
+        <span class="s3-pe" id="s3pe"></span>
+        <span class="s3-orb" id="s3orb"></span>
+      </div>
+    </div>
+    <div class="s3-pn" id="s3pn"></div>
+    <div class="s3-fn" id="s3fn"></div>
+    <div class="s3-cbtn" onclick="openCard()">✦ Princess Card</div>
+  </div>
+  <div class="s3r" id="s3r">
+    <div class="s3-top">
+      <div class="s3-bb" onclick="goTo(2)">← back to worlds</div>
+      <div class="s3-tt" id="s3tt"></div>
+    </div>
+    <div class="s3-intro">
+      <div class="s3-bc">This story found you because</div>
+      <p class="s3-rs" id="s3rs"></p>
+      <h2 class="s3-mt" id="s3mt"></h2>
+      <div class="s3-yr" id="s3yr"></div>
+      <div class="ch-lbl">Her story, in her own words</div>
+      <div id="chCont"></div>
+    </div>
+    <div class="s3-acts">
+      <button class="s3-bp">▷ &nbsp;Watch on Disney+</button>
+      <div class="s3-br">
+        <button class="s3-bs" onclick="addJar();goTo(6)">🫙 Keep in Jar</button>
+        <button class="s3-bs" onclick="openCard()">✦ Princess Card</button>
+        <button class="s3-bs">↗ Share</button>
+      </div>
+    </div>
+  </div>
 </div>
 
-<script>
-    // --- DATA INTEGRATION ---
-    const storyData = {
-        'Ocean': {
-            title: "Ariel: The Voice of Choice",
-            text: "In our reimagined version, Ariel doesn't trade her voice for a man. She trades it to explore a world that values her curiosity over her status.",
-            voice: "The ocean is deep, but her ambition is deeper.",
-            mood: "#001d3d"
-        },
-        'Fantasy': {
-            title: "Cinderella: The Architect",
-            text: "Cinderella didn't wait for a fairy godmother; she built a network of allies. True magic is community and resilience.",
-            voice: "A dream is a blueprint your heart makes.",
-            mood: "#240046"
-        },
-        'Future': {
-            title: "Tomorrowland: Digital Ethics",
-            text: "Technology meets humanity. How do we build a world where progress serves the people, not the other way around?",
-            voice: "Beep boop! The future is a story we write together.",
-            mood: "#000000"
-        }
-    };
+<!-- screen 4 princess card flip thing -->
+<div class="screen" id="screen4">
+  <div class="card-back-nav" onclick="goTo(3)">← back to story</div>
+  <p style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:rgba(255,255,255,.25);font-style:italic;margin-bottom:14px;animation:fadeUp .5s both">Hover to reveal her feminist reread</p>
+  <div class="card-scene">
+    <div class="card-inner">
+      <div class="card-face card-front" id="cardFront"></div>
+      <div class="card-face card-back-face" id="cardBack"></div>
+    </div>
+  </div>
+</div>
 
-    const visited = new Set();
-    const cursor = document.getElementById('cursor');
+<!-- screen 5 world map scroll -->
+<div class="screen" id="screen5">
+  <!-- loading animation -->
+  <div class="map-preloader" id="mapPreloader">
+    <div class="map-quill">🪶</div>
+    <div class="map-loading-text">Unrolling the ancient chart…</div>
+    <div class="map-loading-bar"><div class="map-loading-fill" id="mapFill"></div></div>
+  </div>
+  <!-- the actual scroll -->
+  <div class="map-scroll-outer">
+    <div class="scroll-roll-top"></div>
+    <div class="scroll-body" id="scrollBody">
+      <div class="scroll-content">
+        <div class="map-nav" onclick="goBackMap()">← roll it back up</div>
+        <div class="map-cartouche">
+          <div class="map-cartouche-inner">
+            <div class="map-t">The Disney World</div>
+            <div class="map-s">A chart of all the kingdoms, far & near</div>
+          </div>
+        </div>
+        <div class="scroll-divider">✦ ✦ ✦</div>
+        <div class="map-cont">
+          <svg class="map-svg" viewBox="0 0 860 520" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="paperTex" x="-5%" y="-5%" width="110%" height="110%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/>
+                <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+                <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blend"/>
+                <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+              </filter>
+              <filter id="inkBleed"><feGaussianBlur stdDeviation="0.3"/></filter>
+              <radialGradient id="burnEdge" cx="50%" cy="50%" r="55%">
+                <stop offset="0%" stop-color="transparent"/>
+                <stop offset="80%" stop-color="rgba(80,40,10,0.05)"/>
+                <stop offset="100%" stop-color="rgba(60,20,5,0.2)"/>
+              </radialGradient>
+            </defs>
+            <rect width="860" height="520" fill="#e8d098" rx="4"/>
+            <rect width="860" height="520" fill="url(#burnEdge)" rx="4"/>
+            <ellipse cx="120" cy="80" rx="90" ry="40" fill="rgba(160,110,40,0.07)"/>
+            <ellipse cx="720" cy="440" rx="110" ry="50" fill="rgba(120,80,30,0.06)"/>
+            <ellipse cx="430" cy="260" rx="200" ry="100" fill="rgba(180,130,60,0.04)"/>
+            <ellipse cx="60" cy="380" rx="60" ry="80" fill="rgba(140,90,30,0.05)"/>
+            <ellipse cx="800" cy="120" rx="70" ry="55" fill="rgba(100,65,20,0.06)"/>
+            <rect x="12" y="12" width="836" height="496" rx="6" fill="none" stroke="rgba(100,60,20,0.45)" stroke-width="2"/>
+            <rect x="18" y="18" width="824" height="484" rx="4" fill="none" stroke="rgba(100,60,20,0.2)" stroke-width="1"/>
+            <g fill="none" stroke="rgba(100,60,20,0.35)" stroke-width="1">
+              <path d="M12 40 Q28 28 40 12"/><path d="M820 12 Q832 28 848 40"/>
+              <path d="M12 480 Q28 492 40 508"/><path d="M820 508 Q832 492 848 480"/>
+            </g>
+            <g fill="rgba(100,60,20,0.3)" font-size="14" font-family="serif">
+              <text x="14" y="16">✦</text><text x="838" y="16">✦</text>
+              <text x="14" y="512">✦</text><text x="838" y="512">✦</text>
+            </g>
+            <rect x="20" y="20" width="820" height="480" fill="rgba(180,155,100,0.15)" rx="2"/>
+            <g stroke="rgba(100,70,30,0.06)" stroke-width="0.8" fill="none">
+              <line x1="50" y1="60" x2="80" y2="55"/><line x1="55" y1="68" x2="85" y2="63"/>
+              <line x1="790" y1="80" x2="820" y2="75"/><line x1="792" y1="88" x2="822" y2="83"/>
+              <line x1="50" y1="350" x2="80" y2="345"/><line x1="53" y1="358" x2="83" y2="353"/>
+              <line x1="400" y1="450" x2="430" y2="445"/><line x1="402" y1="458" x2="432" y2="453"/>
+              <line x1="700" y1="420" x2="730" y2="415"/><line x1="703" y1="428" x2="733" y2="423"/>
+            </g>
+            <!-- continents -->
+            <path d="M72 44 Q134 28 184 44 Q215 58 224 94 Q234 132 218 166 Q198 196 173 206 Q147 211 121 196 Q91 176 76 147 Q56 113 59 79 Q61 57 72 44Z" fill="#c8a860" stroke="rgba(80,45,10,0.55)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <text x="142" y="124" fill="rgba(60,30,8,0.55)" font-size="8" font-family="serif" text-anchor="middle" letter-spacing="1.5" font-style="italic">N. America</text>
+            <path d="M146 217 Q172 209 187 225 Q197 249 192 289 Q187 333 172 362 Q157 387 137 382 Q116 372 109 343 Q101 308 106 269 Q111 239 125 223Z" fill="#c8a860" stroke="rgba(80,45,10,0.5)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <text x="152" y="300" fill="rgba(60,30,8,0.5)" font-size="7.5" font-family="serif" text-anchor="middle" letter-spacing="1" font-style="italic">S. America</text>
+            <circle cx="238" cy="157" r="4.5" fill="#c4a050" stroke="rgba(80,45,10,0.4)" stroke-width="1"/>
+            <circle cx="252" cy="171" r="3.5" fill="#c4a050" stroke="rgba(80,45,10,0.35)" stroke-width="1"/>
+            <path d="M336 53 Q376 37 427 51 Q458 61 468 79 Q478 105 457 124 Q437 143 417 139 Q397 134 377 149 Q363 159 349 145 Q329 129 324 105 Q319 79 336 53Z" fill="#c8a860" stroke="rgba(80,45,10,0.55)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <text x="388" y="104" fill="rgba(60,30,8,0.55)" font-size="8" font-family="serif" text-anchor="middle" letter-spacing="1.5" font-style="italic">Europe</text>
+            <path d="M316 69 Q330 59 336 75 Q330 89 316 85Z" fill="#c4a050" stroke="rgba(80,45,10,0.4)" stroke-width="1" filter="url(#inkBleed)"/>
+            <path d="M380 41 Q400 27 420 31 Q430 43 420 53 Q406 57 392 53Z" fill="#c4a050" stroke="rgba(80,45,10,0.4)" stroke-width="1" filter="url(#inkBleed)"/>
+            <path d="M466 95 Q496 89 516 105 Q526 125 511 139 Q491 149 471 139 Q457 129 457 109Z" fill="#c8a860" stroke="rgba(80,45,10,0.45)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <path d="M366 169 Q397 159 427 169 Q453 187 455 231 Q452 279 431 307 Q411 331 386 326 Q361 316 351 287 Q338 253 344 215 Q348 187 366 169Z" fill="#c8a860" stroke="rgba(80,45,10,0.5)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <text x="396" y="256" fill="rgba(60,30,8,0.5)" font-size="7.5" font-family="serif" text-anchor="middle" letter-spacing="1" font-style="italic">Africa</text>
+            <path d="M506 41 Q578 27 658 35 Q707 47 724 75 Q734 105 718 133 Q698 157 662 162 Q622 164 592 152 Q562 142 536 127 Q510 111 498 89 Q490 65 506 41Z" fill="#c8a860" stroke="rgba(80,45,10,0.55)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <text x="608" y="97" fill="rgba(60,30,8,0.55)" font-size="8" font-family="serif" text-anchor="middle" letter-spacing="1.5" font-style="italic">Asia</text>
+            <path d="M568 167 Q588 161 603 171 Q611 191 598 215 Q584 229 569 219 Q556 205 556 187Z" fill="#c4a050" stroke="rgba(80,45,10,0.4)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <path d="M650 161 Q680 156 700 169 Q710 186 695 200 Q678 208 660 200 Q648 188 648 173Z" fill="#c4a050" stroke="rgba(80,45,10,0.4)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <path d="M722 85 Q731 77 739 85 Q741 96 732 102 Q723 100 722 91Z" fill="#c4a050" stroke="rgba(80,45,10,0.35)" stroke-width="1.5"/>
+            <path d="M670 278 Q710 267 745 279 Q769 296 767 327 Q762 354 737 364 Q709 370 684 358 Q659 344 655 315 Q652 293 670 278Z" fill="#c8a860" stroke="rgba(80,45,10,0.45)" stroke-width="1.5" filter="url(#inkBleed)"/>
+            <circle cx="135" cy="316" r="6" fill="#c4a050" stroke="rgba(80,45,10,0.35)" stroke-width="1.2"/>
+            <circle cx="108" cy="330" r="4" fill="#c4a050" stroke="rgba(80,45,10,0.3)" stroke-width="1"/>
+            <circle cx="155" cy="335" r="3" fill="#c4a050" stroke="rgba(80,45,10,0.3)" stroke-width="1"/>
+            <g stroke="rgba(80,45,10,0.18)" stroke-width="1.2" fill="none" stroke-dasharray="5 7">
+              <path d="M226 144 Q305 170 376 162 Q457 153 516 125"/>
+              <path d="M396 147 Q406 210 386 266"/>
+              <path d="M135 316 Q190 335 260 318 Q300 306 330 288"/>
+              <path d="M508 41 Q450 25 390 38"/>
+            </g>
+            <!-- compass rose -->
+            <g transform="translate(800,468)">
+              <circle cx="0" cy="0" r="28" fill="rgba(200,165,80,0.15)" stroke="rgba(80,45,10,0.3)" stroke-width="1"/>
+              <circle cx="0" cy="0" r="20" fill="none" stroke="rgba(80,45,10,0.2)" stroke-width="0.8"/>
+              <polygon points="0,-28 3,-8 0,-14 -3,-8" fill="rgba(80,45,10,0.7)"/>
+              <polygon points="0,28 3,8 0,14 -3,8" fill="rgba(80,45,10,0.4)"/>
+              <polygon points="-28,0 -8,3 -14,0 -8,-3" fill="rgba(80,45,10,0.4)"/>
+              <polygon points="28,0 8,3 14,0 8,-3" fill="rgba(80,45,10,0.4)"/>
+              <polygon points="0,-20 2,-10 0,-13 -2,-10" fill="rgba(80,45,10,0.25)" transform="rotate(45)"/>
+              <polygon points="0,-20 2,-10 0,-13 -2,-10" fill="rgba(80,45,10,0.25)" transform="rotate(135)"/>
+              <polygon points="0,-20 2,-10 0,-13 -2,-10" fill="rgba(80,45,10,0.25)" transform="rotate(225)"/>
+              <polygon points="0,-20 2,-10 0,-13 -2,-10" fill="rgba(80,45,10,0.25)" transform="rotate(315)"/>
+              <circle cx="0" cy="0" r="3" fill="rgba(80,45,10,0.5)"/>
+              <text x="0" y="-33" fill="rgba(60,30,8,0.6)" font-size="8" text-anchor="middle" font-family="serif" font-weight="bold">N</text>
+              <text x="0" y="40" fill="rgba(60,30,8,0.5)" font-size="7" text-anchor="middle" font-family="serif">S</text>
+              <text x="32" y="4" fill="rgba(60,30,8,0.5)" font-size="7" text-anchor="middle" font-family="serif">E</text>
+              <text x="-30" y="4" fill="rgba(60,30,8,0.5)" font-size="7" text-anchor="middle" font-family="serif">W</text>
+            </g>
+            <g transform="translate(40,490)">
+              <line x1="0" y1="0" x2="80" y2="0" stroke="rgba(80,45,10,0.4)" stroke-width="1.5"/>
+              <line x1="0" y1="-5" x2="0" y2="5" stroke="rgba(80,45,10,0.4)" stroke-width="1.5"/>
+              <line x1="80" y1="-5" x2="80" y2="5" stroke="rgba(80,45,10,0.4)" stroke-width="1.5"/>
+              <text x="40" y="-8" fill="rgba(60,30,8,0.45)" font-size="7" text-anchor="middle" font-family="serif" font-style="italic">Scale of Kingdoms</text>
+            </g>
+            <rect x="26" y="464" width="150" height="38" rx="4" fill="rgba(200,165,80,0.2)" stroke="rgba(100,60,20,0.3)" stroke-width="1"/>
+            <text x="101" y="479" fill="rgba(60,30,8,0.55)" font-size="7" font-family="serif" text-anchor="middle" letter-spacing="2" font-style="italic">Here be</text>
+            <text x="101" y="494" fill="rgba(60,30,8,0.65)" font-size="9" font-family="serif" text-anchor="middle" letter-spacing="1" font-weight="bold">DISNEY STORIES</text>
+          </svg>
+          <div class="map-pins" id="mapPins"></div>
+        </div>
+        <div class="scroll-divider" style="margin-top:24px">✦ ✦ ✦</div>
+        <div class="map-legend" id="mapLegend"></div>
+        <div style="height:40px"></div>
+      </div>
+    </div>
+    <div class="scroll-roll-bottom"></div>
+    <div class="scroll-hint">↕ scroll to explore the kingdoms</div>
+  </div>
+</div>
 
-    // --- MAGIC INTERACTIONS ---
-    document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-        if(Math.random() > 0.8) createSparkle(e.clientX, e.clientY);
-    });
+<!-- screen 6 memory jar -->
+<div class="screen" id="screen6">
+  <div class="s6-nav" onclick="goTo(2)">← back</div>
+  <h2 class="s6-t">Your Memory Jar</h2>
+  <p class="s6-s">Every feeling. Every story. Kept safe.</p>
+  <div class="jar-wrap" id="jarWrap">
+    <svg class="jar-svg" viewBox="0 0 220 280" fill="none">
+      <rect x="60" y="20" width="100" height="22" rx="6" fill="rgba(255,255,255,.065)" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+      <path d="M40 60 Q30 100 30 160 Q30 240 110 248 Q190 240 190 160 Q190 100 180 60Z" fill="rgba(255,255,255,.028)" stroke="rgba(255,255,255,.09)" stroke-width="1.5"/>
+      <rect x="55" y="42" width="110" height="20" rx="4" fill="rgba(255,255,255,.038)" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+      <path d="M55 80 Q50 120 52 170" stroke="rgba(255,255,255,.055)" stroke-width="7" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="s6-pills" id="s6Pills"></div>
+  <div class="s6-sh">✦ Share your Disney soul ✦</div>
+</div>
 
-    function createSparkle(x, y) {
-        const s = document.createElement('div');
-        s.innerHTML = "✨"; s.style.position = "fixed";
-        s.style.left = x + "px"; s.style.top = y + "px";
-        s.style.pointerEvents = "none";
-        document.body.appendChild(s);
-        s.animate([{ opacity: 1 }, { opacity: 0, transform: 'translateY(20px)' }], 1000).onfinish = () => s.remove();
-    }
-
-    // --- STORY & QUEST LOGIC ---
-    function openStory(realm) {
-        const data = storyData[realm];
-        document.getElementById('story-title').innerText = data.title;
-        document.getElementById('story-text').innerText = data.text;
-        document.getElementById('story-overlay').style.display = 'flex';
-        
-        // Character Speech
-        speak(data.voice);
-
-        // Update Quest & Jar
-        if(!visited.has(realm)) {
-            visited.add(realm);
-            updateQuest();
-            addToJar(realm);
-        }
-    }
-
-    function closeStory() {
-        document.getElementById('story-overlay').style.display = 'none';
-        document.body.style.background = "#0f0f1a";
-    }
-
-    function updateQuest() {
-        const count = visited.size;
-        document.getElementById('stars').innerText = "⭐ ".repeat(count) + "🌑 ".repeat(3 - count);
-    }
-
-    function addToJar(realm) {
-        const pill = document.createElement('div');
-        pill.className = 'memory-pill';
-        pill.innerText = realm;
-        document.getElementById('memory-jar').appendChild(pill);
-    }
-
-    function speak(text) {
-        const talk = new SpeechSynthesisUtterance(text);
-        window.speechSynthesis.speak(talk);
-        const speech = document.getElementById('speech');
-        speech.innerText = text;
-        speech.style.opacity = 1;
-        setTimeout(() => speech.style.opacity = 0, 4000);
-    }
-
-    function shiftMood(type) {
-        document.body.style.background = storyData[type].mood;
-    }
-
-   
-    const canvas = document.getElementById('star-canvas');
-    const ctx = canvas.getContext('2d');
-    function init() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.onresize = init; init();
-
-    function draw() {
-        ctx.clearRect(0,0,canvas.width, canvas.height);
-        ctx.fillStyle = "white";
-        for(let i=0; i<80; i++) {
-            ctx.beginPath();
-            ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, 0.8, 0, Math.PI*2);
-            ctx.fill();
-        }
-        setTimeout(() => requestAnimationFrame(draw), 400);
-    }
-    draw();
-</script>
+<!-- scripts at the bottom like a normal person -->
+<script src="data.js"></script>
+<script src="main.js"></script>
 </body>
 </html>
